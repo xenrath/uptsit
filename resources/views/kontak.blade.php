@@ -30,7 +30,15 @@
       <div class="contact-content pl-lg-5 mt-5 mt-lg-0">
         <span class="text-muted">Nomor yang dapat dihubungi</span>
         <h2 class="mb-4 mt-2">Unit Sistem Informasi dan Teknologi</h2>
-        <table>
+        <div class="row">
+          <div class="col-md-6">
+            <p>Saiful Labib Marzuqi Hidayat</p>
+            <a href="{{ url('hubungi') }}" class="btn btn-success">
+              <i class="ti-headphone-alt mr-2"></i>Hubungi Kami
+            </a>
+          </div>
+        </div>
+        {{-- <table>
           @foreach ($anggotas as $anggota)
           <tr style="height: 40px">
             <td>{{ $anggota->nama }}</td>
@@ -40,7 +48,7 @@
             </td>
           </tr>
           @endforeach
-        </table>
+        </table> --}}
 
         <ul class="social-icons list-inline mt-5">
           <li class="list-inline-item">

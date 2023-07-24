@@ -16,7 +16,7 @@ class WebController extends Controller
     public function home()
     {
         SEOMeta::setTitle('Home');
-        
+
         $unit = Unit::first();
         $visimisi = Visimisi::first();
 
@@ -41,6 +41,33 @@ class WebController extends Controller
         $tupoksis = Tupoksi::get();
 
         return view('tupoksi', compact('tupoksis'));
+    }
+
+    public function bandwith()
+    {
+        SEOMeta::setTitle('Bandwith');
+
+        $unit = Unit::first();
+
+        return view('bandwith', compact('unit'));
+    }
+
+    public function sistem()
+    {
+        SEOMeta::setTitle('Sistem');
+
+        $unit = Unit::first();
+
+        return view('sistem', compact('unit'));
+    }
+
+    public function sop()
+    {
+        SEOMeta::setTitle('SOP');
+
+        $unit = Unit::first();
+
+        return view('sop', compact('unit'));
     }
 
     public function kontak()
@@ -74,10 +101,14 @@ class WebController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'unit' => 'required',
+            'telp' => 'required',
+            'jenis' => 'required',
             'deskripsi' => 'required',
         ], [
             'nama.required'  => 'Nama pengadu harus ditambahkan!',
             'unit.required' => 'Unit / bagian harus ditambahkan!',
+            'telp.required' => 'Nomor telepon harus ditambahkan!',
+            'jenis.required' => 'Jenis aduan harus dipilih!',
             'deskripsi.required' => 'Deskripsi harus diisi!',
         ]);
 
@@ -86,7 +117,17 @@ class WebController extends Controller
             return back()->withInput()->with('error', $error);
         }
 
-        Pengaduan::create($request->all());
+        $is_nol = substr($request->telp, 0, 1);
+
+        if ($is_nol == '0') {
+            $telp = "+62" . ltrim($request->telp, '0');
+        } else {
+            $telp = $request->telp;
+        }
+
+        Pengaduan::create(array_merge($request->all(), [
+            'telp' => $telp
+        ]));
 
         return back()->with('success', 'Berhasil membuat Pengaduan');
     }

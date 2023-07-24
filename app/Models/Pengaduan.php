@@ -12,6 +12,8 @@ class Pengaduan extends Model
     protected $fillable = [
         'nama',
         'unit',
+        'telp',
+        'jenis',
         'deskripsi'
     ];
 }

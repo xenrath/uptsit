@@ -9,31 +9,89 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function login()
+    public function register()
     {
-        return view('login');
+        return view('register');
     }
 
-    public function login_proses(Request $request)
+    public function proses_register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required',
-            'password' => 'required',
+            'nama' => 'required',
+            'jabatan' => 'required',
+            'email' => 'required|email',
+            'password' => 'required'
         ], [
-            'username.required' => 'Username harus diisi!',
+            'nama.required' => 'Nama Lengkap harus diisi!',
+            'jabatan.required' => 'Jabatan harus diisi!',
+            'email.required' => 'Email Institusi harus diisi!',
+            'email.email' => 'Email Institusi salah!',
             'password.required' => 'Password harus diisi!',
         ]);
 
         if ($validator->fails()) {
             $error = $validator->errors()->all();
-            return back()->with('error', $error);
+            alert()->error('Error!', 'Isi data dengan benar!');
+            return back()->withInput()->with('error', $error);
         }
 
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            $request->session()->regenerate();
-            return redirect()->intended('admin');
+        User::create(array_merge($request->all(), [
+            'password' => bcrypt($request->password),
+            'role' => 'tamu'
+        ]));
+
+        alert()->success('Success', 'Berhasil melakukan pendaftaran');
+
+        return redirect('login');
+    }
+
+    public function login()
+    {
+        if (auth()->check()) {
+            return redirect('check-user');
         } else {
-            return back()->with('error', array('Username atau Password salah!'));
+            return view('login');
+        }
+    }
+
+    public function proses_login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ], [
+            'email.required' => 'Username harus diisi!',
+            'password.required' => 'Password harus diisi!',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->all();
+            alert()->error('Isi data dengan benar!');
+            return back()->withInput()->with('error', $error);
+        }
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $request->session()->regenerate();
+            return redirect('check-user');
+        } else {
+            alert()->error('Username atau Password salah!');
+            return back()->withInput();
+        }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect('login');
+    }
+
+    public function check_user()
+    {
+        if (auth()->user()->role == 'admin') {
+            return redirect('admin');
+        } else {
+            return redirect('tamu');
         }
     }
 }

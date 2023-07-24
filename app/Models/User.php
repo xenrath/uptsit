@@ -13,12 +13,32 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'username',
+        'email',
         'password',
+        'nama',
+        'jabatan',
+        'role'
     ];
 
     protected $hidden = [
         'password',
-        'remember_token',
     ];
+
+    public function isAdmin()
+    {
+        if ($this->role == 'admin') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function isTamu()
+    {
+        if ($this->role == 'tamu') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

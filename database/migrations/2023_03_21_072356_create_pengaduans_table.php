@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('unit');
+            $table->string('telp');
+            $table->enum('jenis', ['internet', 'sistem', 'cctv']);
             $table->string('deskripsi');
             $table->enum('status', ['menunggu', 'proses', 'selesai']);
             $table->timestamps();

@@ -71,12 +71,31 @@
                   <li class="nav-item {{ request()->is('tupoksi') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ url('tupoksi') }}">Tupoksi</a>
                   </li>
+                  <li class="nav-item dropdown {{ request()->is('bandwith') || request()->is('sistem') || request()->is('sop') ? 'active' : '' }}">
+                    <a class="nav-link dropdown-toggle" href="#" id="informasi" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">Informasi
+                      <i class="fas fa-chevron-down small"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="informasi">
+                      <li>
+                        <a class="dropdown-item {{ request()->is('bandwith') ? 'active' : '' }}" href="{{ url('bandwith') }}">Bandwith</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item {{ request()->is('sistem') ? 'active' : '' }}" href="{{ url('sistem') }}">Sistem</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item {{ request()->is('sop') ? 'active' : '' }}" href="{{ url('sop') }}">SOP</a>
+                      </li>
+                    </ul>
+                  </li>
                   <li class="nav-item {{ request()->is('kontak') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ url('kontak') }}">Kontak</a>
                   </li>
                 </ul>
                 <div class="my-2 my-md-0 ml-lg-4 text-center">
-                  <a href="{{ url('pengaduan') }}" class="btn btn-solid-border btn-round-full" style="{{ request()->is('pengaduan') ? 'background-color: #FDED02; color: rgba(0, 0, 0, 0.65);' : '' }}">Buat Pengaduan</a>
+                  <a href="{{ url('login') }}" class="btn btn-solid-border btn-round-full"
+                    style="{{ request()->is('login') ? 'background-color: #FDED02; color: rgba(0, 0, 0, 0.65);' : '' }}">Buat
+                    Pengaduan</a>
                 </div>
               </div>
             </nav>

@@ -17,9 +17,13 @@ class Admin
     public function handle(Request $request, Closure $next)
     {
         if (auth()->check()) {
-            return $next($request);
+            if ($request->user()->isAdmin()) {
+                return $next($request);
+            } else {
+                return redirect('/');
+            }
         } else {
-            return redirect('login');
+            return redirect('/');
         }
     }
 }
