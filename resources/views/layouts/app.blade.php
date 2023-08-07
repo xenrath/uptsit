@@ -191,6 +191,9 @@
   <!-- Select2 -->
   <script src="{{ asset('adminlte/plugins/select2/js/select2.full.min.js') }}"></script>
 
+  <!-- Input Mask -->
+  <script src="{{ asset('adminlte/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
+
   <script>
     $(function() {
       $("#example1").DataTable({

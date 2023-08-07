@@ -46,7 +46,7 @@
             <!-- /.card-header -->
             <div class="card-body">
               <div class="form-group">
-                <label for="kategori">Kategori</label>
+                <label for="kategori">Kategori *</label>
                 <select class="custom-select" id="kategori" name="kategori">
                   <option value="">- Pilih -</option>
                   <option value="baru" {{ old('kategori') == 'baru' ? 'selected' : '' }}>Baru</option>
@@ -55,7 +55,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="nama_instansi">Nama Instansi</label>
+                <label for="nama_instansi">Nama Instansi *</label>
                 <input type="text" class="form-control" id="nama_instansi" name="nama_instansi"
                   placeholder="Masukan Nama Instansi" value="{{ old('nama_instansi') }}">
               </div>
@@ -78,17 +78,17 @@
             </div>
             <div class="card-body">
               <div class="form-group">
-                <label for="nama_kepala">Nama</label>
+                <label for="nama_kepala">Nama *</label>
                 <input type="text" class="form-control" id="nama_kepala" name="nama_kepala" placeholder="Masukan Nama"
                   value="{{ old('nama_kepala') }}">
               </div>
               <div class="form-group">
-                <label for="nipy_kepala">NIPY</label>
+                <label for="nipy_kepala">NIPY *</label>
                 <input type="text" class="form-control" id="nipy_kepala" name="nipy_kepala" placeholder="Masukan NIPY"
                   value="{{ old('nipy_kepala') }}">
               </div>
               <div class="form-group">
-                <label for="jabatan_kepala">Jabatan</label>
+                <label for="jabatan_kepala">Jabatan *</label>
                 <input type="text" class="form-control" id="jabatan_kepala" name="jabatan_kepala"
                   placeholder="Masukan Jabatan" value="{{ old('jabatan_kepala') }}">
               </div>
@@ -111,27 +111,27 @@
             </div>
             <div class="card-body">
               <div class="form-group">
-                <label for="nama_admin">Nama</label>
+                <label for="nama_admin">Nama *</label>
                 <input type="text" class="form-control" id="nama_admin_1" name="nama_admin_1"
                   placeholder="Masukan Nama" value="{{ old('nama_admin_1') }}">
               </div>
               <div class="form-group">
-                <label for="nipy_admin">NIPY</label>
+                <label for="nipy_admin">NIPY *</label>
                 <input type="text" class="form-control" id="nipy_admin_1" name="nipy_admin_1"
                   placeholder="Masukan NIPY" value="{{ old('nipy_admin_1') }}">
               </div>
               <div class="form-group">
-                <label for="jabatan_admin">Jabatan</label>
+                <label for="jabatan_admin">Jabatan *</label>
                 <input type="text" class="form-control" id="jabatan_admin_1" name="jabatan_admin_1"
                   placeholder="Masukan Jabatan" value="{{ old('jabatan_admin_1') }}">
               </div>
               <div class="form-group">
-                <label for="email_admin">Email</label>
+                <label for="email_admin">Email *</label>
                 <input type="text" class="form-control" id="email_admin_1" name="email_admin_1"
                   placeholder="Masukan Email" value="{{ old('email_admin_1') }}">
               </div>
               <div class="form-group">
-                <label for="telp_admin">No. Telepon</label>
+                <label for="telp_admin">No. Telepon *</label>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text">+62</span>
@@ -159,27 +159,27 @@
             </div>
             <div class="card-body">
               <div class="form-group">
-                <label for="nama_admin">Nama</label>
+                <label for="nama_admin">Nama *</label>
                 <input type="text" class="form-control" id="nama_admin_2" name="nama_admin_2"
                   placeholder="Masukan Nama" value="{{ old('nama_admin_2') }}">
               </div>
               <div class="form-group">
-                <label for="nipy_admin">NIPY</label>
+                <label for="nipy_admin">NIPY *</label>
                 <input type="text" class="form-control" id="nipy_admin_2" name="nipy_admin_2"
                   placeholder="Masukan NIPY" value="{{ old('nipy_admin_2') }}">
               </div>
               <div class="form-group">
-                <label for="jabatan_admin">Jabatan</label>
+                <label for="jabatan_admin">Jabatan *</label>
                 <input type="text" class="form-control" id="jabatan_admin_2" name="jabatan_admin_2"
                   placeholder="Masukan Jabatan" value="{{ old('jabatan_admin_2') }}">
               </div>
               <div class="form-group">
-                <label for="email_admin">Email</label>
+                <label for="email_admin">Email *</label>
                 <input type="text" class="form-control" id="email_admin_2" name="email_admin_2"
                   placeholder="Masukan Email" value="{{ old('email_admin_2') }}">
               </div>
               <div class="form-group">
-                <label for="telp_admin">No. Telepon</label>
+                <label for="telp_admin">No. Telepon *</label>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text">+62</span>
@@ -207,12 +207,12 @@
             </div>
             <div class="card-body">
               <div class="form-group">
-                <label for="deskripsi">Deskripsi</label>
+                <label for="deskripsi">Deskripsi *</label>
                 <textarea type="text" class="form-control" id="deskripsi" name="deskripsi" placeholder="Masukan Deskripsi">{{ old('deskripsi') }}</textarea>
               </div>
               <div class="form-group">
                 <label for="sub_domain">
-                  Sub Domain
+                  Sub Domain *
                   <small>(Nama Sub Domain harus URL friendly / mudah dibaca)</small>
                 </label>
                 <input type="text" class="form-control" id="sub_domain" name="sub_domain"
@@ -220,11 +220,11 @@
               </div>
               <div class="form-group">
                 <label for="ip_address">
-                  IP Address
+                  IP Address *
                   <small>(Jika menggunakan server selain server lain)</small>
                 </label>
                 <input type="text" class="form-control" id="ip_address" name="ip_address"
-                  placeholder="Masukan IP Address" value="{{ old('ip_address') }}">
+                  data-inputmask="'alias': 'ip'" data-mask value="{{ old('ip_address') }}">
               </div>
               <div class="form-group">
                 <label for="ftp">

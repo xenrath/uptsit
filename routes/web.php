@@ -58,6 +58,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::resource('pengaduan-masuk', MasukController::class);
 
     Route::resource('pengaduan-selesai', SelesaiController::class);
+
+    Route::get('hosting/{id}/setujui', [\App\Http\Controllers\Admin\HostingController::class, 'setujui']);
+    Route::resource('hosting', \App\Http\Controllers\Admin\HostingController::class)->only(['index', 'show']);
 });
 
 Route::middleware('tamu')->prefix('tamu')->group(function () {

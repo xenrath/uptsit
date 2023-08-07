@@ -8,6 +8,7 @@ use App\Models\Hosting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Carbon\Carbon;
 
 class HostingController extends Controller
 {
@@ -99,12 +100,10 @@ class HostingController extends Controller
             'deskripsi' => 'required',
             'sub_domain' => 'required',
             'ip_address' => 'required',
-            'ftp' => 'required',
         ], [
             'deskripsi.required' => 'Deskripsi harus diisi!',
             'sub_domain.required'  => 'Sub Domain harus diisi!',
             'ip_address.required'  => 'IP Address harus diisi!',
-            'ftp.required'  => 'FTP harus diisi!',
         ]);
 
         if ($validator_detail->fails()) {
@@ -124,6 +123,7 @@ class HostingController extends Controller
 
         Hosting::create(array_merge($request->all(), [
             'user_id' => auth()->user()->id,
+            'tanggal_awal' => Carbon::now()->format('Y-m-d'),
             'status' => 'menunggu'
         ]));
 

@@ -34,11 +34,11 @@ return new class extends Migration
             $table->string('telp_admin_2');
             $table->string('deskripsi');
             $table->string('sub_domain');
-            $table->string('ip_address');
-            $table->string('ftp');
+            $table->string('ip_address')->nullable();
+            $table->string('ftp')->nullable();
             $table->string('tanggal_awal');
-            $table->string('tanggal_pengerjaan');
-            $table->string('tanggal_akhir');
+            $table->string('tanggal_pengerjaan')->nullable();
+            $table->string('tanggal_akhir')->nullable();
             $table->enum('status', ['menunggu', 'proses', 'selesai']);
             $table->timestamps();
         });
