@@ -221,8 +221,9 @@
         </div>
         <div class="card">
           <div class="card-footer">
-            <a href="{{ url('tamu/hosting/download/' . $hosting->id) }}" class="btn btn-primary btn-block" target="_blank">
-              <i class="fas fa-download mr-2"></i>Unduh Dokumen
+            <a href="{{ url('tamu/hosting/download/' . $hosting->id) }}" class="btn btn-primary btn-block"
+              target="_blank">
+              Unduh Dokumen
             </a>
           </div>
         </div>

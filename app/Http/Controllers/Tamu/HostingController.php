@@ -14,7 +14,7 @@ class HostingController extends Controller
 {
     public function index()
     {
-        $hostings = Hosting::where('user_id', auth()->user()->id)->get();
+        $hostings = Hosting::where('user_id', auth()->user()->id)->orderBy('status')->orderByDesc('tanggal_awal')->get();
 
         return view('tamu.hosting.index', compact('hostings'));
     }
@@ -144,6 +144,148 @@ class HostingController extends Controller
         }
 
         return view('tamu.hosting.show', compact('hosting'));
+    }
+
+    public function edit($id)
+    {
+        $hosting = Hosting::where('id', $id)->first();
+
+        return view('tamu.hosting.edit', compact('hosting'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validator_permohonan = Validator::make($request->all(), [
+            'kategori' => 'required',
+            'nama_instansi' => 'required',
+        ], [
+            'kategori.required'  => 'Kategori harus dipilih!',
+            'nama_instansi.required' => 'Nama Instansi harus diisi!',
+        ]);
+
+        if ($validator_permohonan->fails()) {
+            $error_permohonan = $validator_permohonan->errors()->all();
+        } else {
+            $error_permohonan = null;
+        }
+
+        $validator_kepala = Validator::make($request->all(), [
+            'nama_kepala' => 'required',
+            'nipy_kepala' => 'required',
+            'jabatan_kepala' => 'required',
+        ], [
+            'nama_kepala.required' => 'Nama harus diisi!',
+            'nipy_kepala.required'  => 'NIPY harus diisi!',
+            'jabatan_kepala.required'  => 'Jabatan harus diisi!',
+        ]);
+
+        if ($validator_kepala->fails()) {
+            $error_kepala = $validator_kepala->errors()->all();
+        } else {
+            $error_kepala = null;
+        }
+
+        $validator_admin_1 = Validator::make($request->all(), [
+            'nama_admin_1' => 'required',
+            'nipy_admin_1' => 'required',
+            'jabatan_admin_1' => 'required',
+            'email_admin_1' => 'required',
+            'telp_admin_1' => 'required',
+        ], [
+            'nama_admin_1.required' => 'Nama harus diisi!',
+            'nipy_admin_1.required'  => 'NIPY harus diisi!',
+            'jabatan_admin_1.required'  => 'Jabatan harus diisi!',
+            'email_admin_1.required'  => 'Email harus diisi!',
+            'telp_admin_1.required'  => 'No. Telepon harus diisi!',
+        ]);
+
+        if ($validator_admin_1->fails()) {
+            $error_admin_1 = $validator_admin_1->errors()->all();
+        } else {
+            $error_admin_1 = null;
+        }
+
+        $validator_admin_2 = Validator::make($request->all(), [
+            'nama_admin_2' => 'required',
+            'nipy_admin_2' => 'required',
+            'jabatan_admin_2' => 'required',
+            'email_admin_2' => 'required',
+            'telp_admin_2' => 'required',
+        ], [
+            'nama_admin_2.required' => 'Nama harus diisi!',
+            'nipy_admin_2.required'  => 'NIPY harus diisi!',
+            'jabatan_admin_2.required'  => 'Jabatan harus diisi!',
+            'email_admin_2.required'  => 'Email harus diisi!',
+            'telp_admin_2.required'  => 'No. Telepon harus diisi!',
+        ]);
+
+        if ($validator_admin_2->fails()) {
+            $error_admin_2 = $validator_admin_2->errors()->all();
+        } else {
+            $error_admin_2 = null;
+        }
+
+        $validator_detail = Validator::make($request->all(), [
+            'deskripsi' => 'required',
+            'sub_domain' => 'required',
+            'ip_address' => 'required',
+        ], [
+            'deskripsi.required' => 'Deskripsi harus diisi!',
+            'sub_domain.required'  => 'Sub Domain harus diisi!',
+            'ip_address.required'  => 'IP Address harus diisi!',
+        ]);
+
+        if ($validator_detail->fails()) {
+            $error_detail = $validator_detail->errors()->all();
+        } else {
+            $error_detail = null;
+        }
+
+        if ($error_permohonan || $error_kepala || $error_admin_1 || $error_admin_2 || $error_detail) {
+            return back()->withInput()
+                ->with('error_permohonan', $error_permohonan)
+                ->with('error_kepala', $error_kepala)
+                ->with('error_admin_1', $error_admin_1)
+                ->with('error_admin_2', $error_admin_2)
+                ->with('error_detail', $error_detail);
+        }
+
+        Hosting::where('id', $id)->update([
+            'user_id' => auth()->user()->id,
+            'kategori' => $request->kategori,
+            'nama_instansi' => $request->nama_instansi,
+            'nama_kepala' => $request->nama_kepala,
+            'nipy_kepala' => $request->nipy_kepala,
+            'jabatan_kepala' => $request->jabatan_kepala,
+            'nama_admin_1' => $request->nama_admin_1,
+            'nipy_admin_1' => $request->nipy_admin_1,
+            'jabatan_admin_1' => $request->jabatan_admin_1,
+            'email_admin_1' => $request->email_admin_1,
+            'telp_admin_1' => $request->telp_admin_1,
+            'nama_admin_2' => $request->nama_admin_2,
+            'nipy_admin_2' => $request->nipy_admin_2,
+            'jabatan_admin_2' => $request->jabatan_admin_2,
+            'email_admin_2' => $request->email_admin_2,
+            'telp_admin_2' => $request->telp_admin_2,
+            'deskripsi' => $request->deskripsi,
+            'sub_domain' => $request->sub_domain,
+            'ip_address' => $request->ip_address,
+            'ftp' => $request->ftp,
+        ]);
+
+        alert()->success('Success', 'Berhasil memperbarui permohonan Web Hosting');
+
+        return redirect('tamu/hosting');
+    }
+
+    public function destroy($id)
+    {
+        $hosting = Hosting::where('id', $id)->first();
+        $hosting->delete();
+
+        alert()->success('Success', 'Berhasil menghapus permohonan Web Hosting');
+
+        return back();
     }
 
     public function download($id)

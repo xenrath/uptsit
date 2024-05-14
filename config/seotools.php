@@ -35,7 +35,15 @@ return [
                 'Unit Pelaksanaan Teknis Sistem Informasi dan Teknologi',
                 'Unit Sistem Informasi dan Teknologi',
                 'Unit SIT',
-                'UPT SIT'
+                'UPT SIT',
+                'Information Technology',
+                'Teknologi Informasi',
+                'IT Bhamada',
+                'IT Website',
+                'IT Sistem',
+                'Peminjaman CBT',
+                'Tupoksi IT',
+                'Tupoksi SIT',
             ],
             'canonical'    => null, // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
             'robots'       => false, // Set to 'all', 'none' or any combination of index/noindex and follow/nofollow
@@ -63,7 +71,7 @@ return [
             'description' => $description, // set false to total remove
             'url'         => null, // Set null for using Url::current(), set false to total remove
             'type'        => 'website',
-            'site_name'   => 'UPT SIT Bhamada',
+            'site_name'   => 'IT Bhamada',
             'images'      => ['http://localhost/website/public/megakit/theme/images/bg/logo-bhamada.png'],
         ],
     ],

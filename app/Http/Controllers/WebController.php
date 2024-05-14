@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggota;
+use App\Models\Jam;
+use App\Models\PeminjamanCbt;
 use App\Models\Pengaduan;
+use App\Models\Prodi;
 use App\Models\Tupoksi;
 use App\Models\Unit;
 use App\Models\Visimisi;
@@ -70,6 +73,15 @@ class WebController extends Controller
         return view('sop', compact('unit'));
     }
 
+    public function kuesioner()
+    {
+        SEOMeta::setTitle('Kuesioner');
+
+        $unit = Unit::first();
+
+        return view('kuesioner', compact('unit'));
+    }
+
     public function kontak()
     {
         SEOMeta::setTitle('Kontak');
@@ -88,6 +100,84 @@ class WebController extends Controller
         } else {
             return redirect()->away('https://wa.me/+62' . $anggota->telp);
         }
+    }
+
+    public function peminjaman_cbt()
+    {
+        
+    }
+
+    public function peminjaman_cbt_store(Request $request)
+    {
+        $error = array();
+
+        $validator_satu = Validator::make($request->all(), [
+            'keperluan' => 'required',
+            'nama' => 'required',
+            'prodi_id' => 'required',
+            'jam_id' => 'required',
+            'tanggal' => 'required'
+        ], [
+            'keperluan.required' => 'Keperluan harus dipilih!',
+            'nama.required' => 'Nama Mahasiswa harus diisi!',
+            'prodi_id.required' => 'Prodi harus dipilih!',
+            'jam_id.required' => 'Jam Pinjam harus dipilih!',
+            'tanggal.required' => 'Tanggal Pinjam harus diisi!'
+        ]);
+
+        if ($validator_satu->fails()) {
+            $error_satu = $validator_satu->errors()->all();
+            foreach ($error_satu as $value) {
+                array_push($error, $value);
+            }
+        }
+
+        if (!is_null($request->items)) {
+            $validator_dua = Validator::make($request->all(), [
+                'jumlah' => 'required',
+            ], [
+                'jumlah.required' => 'Jumlah Item harus dipilih!',
+            ]);
+
+            if ($validator_dua->fails()) {
+                $error_dua = $validator_dua->errors()->all();
+                array_push($error, $error_dua[0]);
+            }
+        }
+
+        $validator_tiga = Validator::make($request->all(), [
+            'keterangan' => 'required',
+            'pj' => 'required',
+        ], [
+            'keterangan.required' => 'Uraian Kegiatan harus diisi!',
+            'pj.required' => 'Penanggung Jawab harus diisi!',
+        ]);
+
+        if ($validator_tiga->fails()) {
+            $error_tiga = $validator_tiga->errors()->all();
+            foreach ($error_tiga as $value) {
+                array_push($error, $value);
+            }
+        }
+        
+        if ($error) {
+            return back()->withInput()->with('error', $error);
+        }
+
+        PeminjamanCbt::create([
+            'keperluan' => $request->keperluan,
+            'nama' => $request->nama,
+            'prodi_id' => $request->prodi_id,
+            'jam_id' => $request->jam_id,
+            'tanggal' => $request->tanggal,
+            'items' => $request->items,
+            'keterangan' => $request->keterangan,
+            'pj' => $request->pj,
+        ]);
+
+        alert()->success('Success', 'Berhasil membuat Peminjaman');
+
+        return back();
     }
 
     public function pengaduan()

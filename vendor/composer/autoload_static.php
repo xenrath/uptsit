@@ -378,8 +378,8 @@ class ComposerStaticInit067882fb67a9113067f7b59991ed278b
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -621,7 +621,12 @@ class ComposerStaticInit067882fb67a9113067f7b59991ed278b
         'App\\Models\\Anggota' => __DIR__ . '/../..' . '/app/Models/Anggota.php',
         'App\\Models\\Catatan' => __DIR__ . '/../..' . '/app/Models/Catatan.php',
         'App\\Models\\Hosting' => __DIR__ . '/../..' . '/app/Models/Hosting.php',
+        'App\\Models\\Item' => __DIR__ . '/../..' . '/app/Models/Item.php',
+        'App\\Models\\Jam' => __DIR__ . '/../..' . '/app/Models/Jam.php',
+        'App\\Models\\Keperluan' => __DIR__ . '/../..' . '/app/Models/Keperluan.php',
+        'App\\Models\\PeminjamanCbt' => __DIR__ . '/../..' . '/app/Models/PeminjamanCbt.php',
         'App\\Models\\Pengaduan' => __DIR__ . '/../..' . '/app/Models/Pengaduan.php',
+        'App\\Models\\Prodi' => __DIR__ . '/../..' . '/app/Models/Prodi.php',
         'App\\Models\\Tamu' => __DIR__ . '/../..' . '/app/Models/Tamu.php',
         'App\\Models\\Tupoksi' => __DIR__ . '/../..' . '/app/Models/Tupoksi.php',
         'App\\Models\\Unit' => __DIR__ . '/../..' . '/app/Models/Unit.php',
@@ -814,6 +819,8 @@ class ComposerStaticInit067882fb67a9113067f7b59991ed278b
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\AnggotaSeeder' => __DIR__ . '/../..' . '/database/seeders/AnggotaSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
+        'Database\\Seeders\\JamSeeder' => __DIR__ . '/../..' . '/database/seeders/JamSeeder.php',
+        'Database\\Seeders\\ProdiSeeder' => __DIR__ . '/../..' . '/database/seeders/ProdiSeeder.php',
         'Database\\Seeders\\TupoksiSeeder' => __DIR__ . '/../..' . '/database/seeders/TupoksiSeeder.php',
         'Database\\Seeders\\UnitSeeder' => __DIR__ . '/../..' . '/database/seeders/UnitSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',

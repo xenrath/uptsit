@@ -31,7 +31,6 @@ class Hosting extends Model
         'ip_address',
         'ftp',
         'tanggal_awal',
-        'tanggal_pengerjaan',
         'tanggal_akhir',
         'status'
     ];

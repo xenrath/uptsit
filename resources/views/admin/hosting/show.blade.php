@@ -29,6 +29,16 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Detail Permohonan</h3>
+            @php
+              if ($hosting->status == 'menunggu') {
+                  $badge = 'badge-warning';
+              } else {
+                  $badge = 'badge-success';
+              }
+            @endphp
+            <div class="float-right">
+              <small class="badge {{ $badge }}">{{ $hosting->status }}</small>
+            </div>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -219,14 +229,15 @@
             </div>
           </div>
         </div>
-        <div class="card">
-          <div class="card-footer">
-            <a href="{{ url('admin/hosting/' . $hosting->id . '/setujui') }}" class="btn btn-primary btn-block">
-              <i class="fas fa-check"></i>
-              Setujui Permohonan
-            </a>
+        @if ($hosting->status == 'menunggu')
+          <div class="card">
+            <div class="card-footer">
+              <a href="{{ url('admin/hosting/' . $hosting->id . '/selesai') }}" class="btn btn-primary btn-block">
+                Selesaikan Permohonan
+              </a>
+            </div>
           </div>
-        </div>
+        @endif
       </div>
     </section>
   </div>

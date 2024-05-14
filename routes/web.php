@@ -8,26 +8,31 @@ use App\Http\Controllers\Admin\TupoksiController;
 use App\Http\Controllers\Admin\Pengaduan\MasukController;
 use App\Http\Controllers\Admin\Pengaduan\SelesaiController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\WebController;
+use App\Http\Controllers\PeminjamanCbtController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [WebController::class, 'home']);
+Route::get('/', [App\Http\Controllers\WebController::class, 'home']);
 
-Route::get('about', [WebController::class, 'about']);
+Route::get('about', [App\Http\Controllers\WebController::class, 'about']);
 
-Route::get('tupoksi', [WebController::class, 'tupoksi']);
+Route::get('tupoksi', [App\Http\Controllers\WebController::class, 'tupoksi']);
+Route::get('bandwith', [App\Http\Controllers\WebController::class, 'bandwith']);
+Route::get('sistem', [App\Http\Controllers\WebController::class, 'sistem']);
+Route::get('sop', [App\Http\Controllers\WebController::class, 'sop']);
 
-Route::get('bandwith', [WebController::class, 'bandwith']);
-Route::get('sistem', [WebController::class, 'sistem']);
-Route::get('sop', [WebController::class, 'sop']);
+Route::get('kuesioner', [App\Http\Controllers\WebController::class, 'kuesioner']);
 
-Route::get('kontak', [WebController::class, 'kontak']);
+Route::get('kontak', [App\Http\Controllers\WebController::class, 'kontak']);
+Route::get('hubungi/{id}', [App\Http\Controllers\WebController::class, 'hubungi']);
 
-Route::get('hubungi/{id}', [WebController::class, 'hubungi']);
+Route::get('peminjaman-cbt/pembelajaran', [\App\Http\Controllers\PeminjamanCbtController::class, 'create_pembelajaran']);
+Route::get('peminjaman-cbt/lainnya', [\App\Http\Controllers\PeminjamanCbtController::class, 'create_lainnya']);
+Route::post('peminjaman-cbt/pembelajaran', [\App\Http\Controllers\PeminjamanCbtController::class, 'store_pembelajaran']);
+Route::post('peminjaman-cbt/lainnya', [\App\Http\Controllers\PeminjamanCbtController::class, 'store_lainnya']);
+Route::resource('peminjaman-cbt', PeminjamanCbtController::class)->only('index', 'create', 'store');
 
-Route::get('pengaduan', [WebController::class, 'pengaduan']);
-Route::post('pengaduan/create', [WebController::class, 'pengaduan_create']);
-
+Route::get('pengaduan', [App\Http\Controllers\WebController::class, 'pengaduan']);
+Route::post('pengaduan/create', [App\Http\Controllers\WebController::class, 'pengaduan_create']);
 
 Route::get('register', [AuthController::class, 'register']);
 Route::post('register', [AuthController::class, 'proses_register']);
@@ -45,7 +50,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('unit', [UnitController::class, 'index']);
     Route::post('unit/update', [UnitController::class, 'update']);
 
-    Route::resource('anggota', AnggotaController::class);
+    Route::resource('anggota', AnggotaController::class)->except('show');
 
     Route::resource('visimisi', VisiMisiController::class);
 
@@ -59,8 +64,14 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
     Route::resource('pengaduan-selesai', SelesaiController::class);
 
-    Route::get('hosting/{id}/setujui', [\App\Http\Controllers\Admin\HostingController::class, 'setujui']);
+    Route::get('hosting/{id}/selesai', [\App\Http\Controllers\Admin\HostingController::class, 'selesai']);
     Route::resource('hosting', \App\Http\Controllers\Admin\HostingController::class)->only(['index', 'show']);
+
+    Route::post('peminjaman-cbt/ubah-waktu/{id}', [\App\Http\Controllers\Admin\PeminjamanCbtController::class, 'ubah_waktu']);
+    Route::get('peminjaman-cbt/selesaikan/{id}', [\App\Http\Controllers\Admin\PeminjamanCbtController::class, 'selesaikan']);
+    Route::get('peminjaman-cbt/riwayat', [\App\Http\Controllers\Admin\PeminjamanCbtController::class, 'riwayat']);
+    Route::resource('peminjaman-cbt', \App\Http\Controllers\Admin\PeminjamanCbtController::class);
+    Route::resource('peminjaman-cbt', \App\Http\Controllers\Admin\PeminjamanCbtController::class);
 });
 
 Route::middleware('tamu')->prefix('tamu')->group(function () {

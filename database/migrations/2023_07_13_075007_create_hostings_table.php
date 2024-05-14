@@ -37,7 +37,6 @@ return new class extends Migration
             $table->string('ip_address')->nullable();
             $table->string('ftp')->nullable();
             $table->string('tanggal_awal');
-            $table->string('tanggal_pengerjaan')->nullable();
             $table->string('tanggal_akhir')->nullable();
             $table->enum('status', ['menunggu', 'proses', 'selesai']);
             $table->timestamps();

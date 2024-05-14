@@ -306,6 +306,10 @@ input[type=tel]:focus {
   color: var(--color-primary);
 }
 
+.text-color:hover {
+  color: #00d747;
+}
+
 .text-black {
   color: #242424;
 }
@@ -314,9 +318,9 @@ input[type=tel]:focus {
   color: #c54041;
 }
 
-.text-color2 {
+/* .text-color2 {
   color: #b99769;
-}
+} */
 
 .text-sm {
   font-size: 14px;

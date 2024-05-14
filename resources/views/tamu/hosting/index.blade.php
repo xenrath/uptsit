@@ -47,15 +47,15 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <table id="example1" class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th class="text-center" style="width: 20px">No</th>
+                  <th class="text-center" style="width: 60px">No</th>
                   <th>Kategori</th>
                   <th>Nama Instansi</th>
                   <th>Sub Domain</th>
                   <th>Status</th>
-                  <th style="width: 120px">Opsi</th>
+                  <th class="text-center">Opsi</th>
                 </tr>
               </thead>
               <tbody>
@@ -78,30 +78,32 @@
                       @endphp
                       <small class="badge {{ $badge }}">{{ $hosting->status }}</small>
                     </td>
-                    <td>
+                    <td class="text-center">
                       <a href="{{ url('tamu/hosting/' . $hosting->id) }}" class="btn btn-info">
                         <i class="fas fa-eye"></i>
                       </a>
-                      <a href="{{ url('tamu/hosting/' . $hosting->id . '/edit') }}" class="btn btn-warning">
-                        <i class="fas fa-pencil-alt"></i>
-                      </a>
-                      <button type="submit" class="btn btn-danger" data-toggle="modal"
-                        data-target="#modal-hapus-{{ $hosting->id }}">
-                        <i class="fas fa-trash"></i>
-                      </button>
+                      @if ($hosting->status == 'menunggu')
+                        <a href="{{ url('tamu/hosting/' . $hosting->id . '/edit') }}" class="btn btn-warning">
+                          <i class="fas fa-pencil-alt"></i>
+                        </a>
+                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                          data-target="#modal-hapus-{{ $hosting->id }}">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      @endif
                     </td>
                   </tr>
                   <div class="modal fade" id="modal-hapus-{{ $hosting->id }}">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h4 class="modal-title">Hapus Anggota</h4>
+                          <h4 class="modal-title">Hapus Permohonan</h4>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                         <div class="modal-body">
-                          <p>Yakin hapus hosting <strong>{{ $hosting->nama }}</strong>?</p>
+                          <p>Yakin hapus permohonan?</p>
                         </div>
                         <div class="modal-footer justify-content-between">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>

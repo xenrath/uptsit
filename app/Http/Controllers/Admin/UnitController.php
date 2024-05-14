@@ -11,7 +11,16 @@ class UnitController extends Controller
 {
     public function index()
     {
-        $unit = Unit::first();
+        $unit = Unit::select(
+            'nama',
+            'deskripsi',
+            'sistem',
+            'website',
+            'ap',
+            'email',
+            'telp'
+        )
+            ->first();
 
         return view('admin.unit.index', compact('unit'));
     }
