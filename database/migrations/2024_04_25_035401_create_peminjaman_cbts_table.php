@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('peminjaman_cbts', function (Blueprint $table) {
             $table->id();
+            $table->string('kode')->unique();
             $table->enum('keperluan', ['pembelajaran', 'lainnya']);
             $table->string('nama');
             $table->unsignedBigInteger('prodi_id')->nullable();
@@ -23,7 +24,7 @@ return new class extends Migration
             $table->text('keterangan');
             $table->string('pj');
             $table->string('telp')->nullable();
-            $table->enum('status', ['menunggu', 'selesai']);
+            $table->enum('status', ['menunggu', 'disetujui', 'selesai']);
             $table->timestamps();
         });
     }

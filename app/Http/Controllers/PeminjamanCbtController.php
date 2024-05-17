@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
 use App\Models\PeminjamanCbt;
 use App\Models\Prodi;
 use Artesaos\SEOTools\Facades\SEOMeta;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PeminjamanCbtController extends Controller
 {
@@ -15,7 +20,8 @@ class PeminjamanCbtController extends Controller
     {
         $tanggal = $request->tanggal;
         if ($tanggal) {
-            $peminjaman_cbts = PeminjamanCbt::where('tanggal_awal', '<=', $tanggal)
+            $peminjaman_cbts = PeminjamanCbt::where('status', '!=', 'menunggu')
+                ->where('tanggal_awal', '<=', $tanggal)
                 ->where('tanggal_akhir', '>=', $tanggal)
                 ->select(
                     'id',
@@ -37,7 +43,8 @@ class PeminjamanCbtController extends Controller
                 ->orderBy('jam_awal')
                 ->get();
         } else {
-            $peminjaman_cbts = PeminjamanCbt::where('tanggal_awal', '<=', Carbon::now()->format('Y-m-d'))
+            $peminjaman_cbts = PeminjamanCbt::where('status', '!=', 'menunggu')
+                ->where('tanggal_awal', '<=', Carbon::now()->format('Y-m-d'))
                 ->where('tanggal_akhir', '>=', Carbon::now()->format('Y-m-d'))
                 ->select(
                     'id',
@@ -136,9 +143,11 @@ class PeminjamanCbtController extends Controller
         $validator_tiga = Validator::make($request->all(), [
             'keterangan' => 'required',
             'pj' => 'required',
+            'telp' => 'required',
         ], [
             'keterangan.required' => 'Uraian Kegiatan harus diisi!',
             'pj.required' => 'Penanggung Jawab harus diisi!',
+            'telp.required' => 'Nomor Peminjam harus diisi!',
         ]);
 
         if ($validator_tiga->fails()) {
@@ -163,7 +172,8 @@ class PeminjamanCbtController extends Controller
             return back()->withInput()->with('cek', $cek);
         }
 
-        PeminjamanCbt::create([
+        $peminjaman_cbt = PeminjamanCbt::create([
+            'kode' => Str::random(6),
             'keperluan' => 'pembelajaran',
             'nama' => $request->nama,
             'prodi_id' => $request->prodi_id,
@@ -175,8 +185,18 @@ class PeminjamanCbtController extends Controller
             'jumlahs' => $request->jumlahs,
             'keterangan' => $request->keterangan,
             'pj' => $request->pj,
+            'telp' => $request->telp,
             'status' => 'menunggu'
         ]);
+
+        $message_konfirmasi = "Peminjaman Laboratorium CBT"  . PHP_EOL;
+        $message_konfirmasi .= "----------------------------------"  . PHP_EOL;
+        $message_konfirmasi .= "Link Konfirmasi Peminjaman untuk Penanggung Jawab" . PHP_EOL;
+        $message_konfirmasi .= url('peminjaman-cbt/' . $peminjaman_cbt->kode) . PHP_EOL;
+        $message_konfirmasi .= "----------------------------------"  . PHP_EOL;
+        $message_konfirmasi .= "_kirim link ini ke penanggung jawab_";
+
+        $this->kirim($peminjaman_cbt->telp, $message_konfirmasi);
 
         alert()->success('Success', 'Berhasil membuat Peminjaman');
 
@@ -250,7 +270,8 @@ class PeminjamanCbtController extends Controller
             return back()->withInput()->with('cek', $cek);
         }
 
-        PeminjamanCbt::create([
+        $peminjaman_cbt = PeminjamanCbt::create([
+            'kode' => Str::random(6),
             'keperluan' => 'lainnya',
             'nama' => $request->nama,
             'tanggal_awal' => $request->tanggal_awal,
@@ -265,26 +286,141 @@ class PeminjamanCbtController extends Controller
             'status' => 'menunggu'
         ]);
 
+        $message_konfirmasi = "Peminjaman Laboratorium CBT"  . PHP_EOL;
+        $message_konfirmasi .= "----------------------------------"  . PHP_EOL;
+        $message_konfirmasi .= "Link Konfirmasi Peminjaman untuk Penanggung Jawab" . PHP_EOL;
+        $message_konfirmasi .= url('peminjaman-cbt/' . $peminjaman_cbt->kode) . PHP_EOL;
+        $message_konfirmasi .= "----------------------------------"  . PHP_EOL;
+        $message_konfirmasi .= "_kirim link ini ke penanggung jawab_";
+
+        $this->kirim($peminjaman_cbt->telp, $message_konfirmasi);
+
         alert()->success('Success', 'Berhasil membuat Peminjaman');
 
         return redirect('peminjaman-cbt');
     }
 
+    // Konfirmasi Peminjaman
+    public function show($kode)
+    {
+        $peminjaman_cbt = PeminjamanCbt::where('kode', $kode)
+            ->select(
+                'kode',
+                'keperluan',
+                'nama',
+                'prodi_id',
+                'tanggal_awal',
+                'tanggal_akhir',
+                'jam_awal',
+                'jam_akhir',
+                'items',
+                'jumlahs',
+                'keterangan',
+                'pj',
+                'status'
+            )
+            ->first();
+
+        return view('peminjaman-cbt.konfirmasi', compact('peminjaman_cbt'));
+    }
+
+    // Proses Konfirmasi Peminjaman
+    public function update(Request $request, $kode)
+    {
+        $ttd = $request->ttd;
+        if (is_null($ttd)) {
+            alert()->error('Error!', 'Tanda Tangan belum dilakukan!');
+            return back();
+        }
+
+        $peminjaman_cbt = PeminjamanCbt::where('kode', $kode)->first();
+
+        $cek = $this->cek_peminjaman(
+            $peminjaman_cbt->tanggal_awal,
+            $peminjaman_cbt->tanggal_awal,
+            $peminjaman_cbt->jam_awal,
+            $peminjaman_cbt->jam_akhir
+        );
+
+        if (count($cek) > 0) {
+            return back()->withInput()->with('cek', $cek);
+        }
+
+        if ($peminjaman_cbt->status == 'disetujui') {
+            alert()->error('Error!', 'Peminjaman sudah dikonfirmasi!');
+            return back();
+        }
+
+        $ttd = str_replace('data:image/png;base64,', '', $ttd);
+        $ttd = str_replace(' ', '+', $ttd);
+        $namattd = 'ttd/' . $kode . '.' . 'png';
+        File::put(public_path('storage/uploads') . '/' . $namattd, base64_decode($ttd));
+
+        PeminjamanCbt::where('kode', $kode)->update([
+            'ttd' => $namattd,
+            'status' => 'disetujui'
+        ]);
+
+        if ($peminjaman_cbt->tanggal_awal == $peminjaman_cbt->tanggal_akhir) {
+            $tanggal = Carbon::parse($peminjaman_cbt->tanggal_awal)->translatedFormat('d F');
+        } else {
+            $tanggal = Carbon::parse($peminjaman_cbt->tanggal_awal)->translatedFormat('d F') . "-" . Carbon::parse($peminjaman_cbt->tanggal_akhir)->translatedFormat('d F');
+        }
+
+        $message = "Peminjaman Laboratorium CBT"  . PHP_EOL;
+        $message .= "----------------------------------"  . PHP_EOL;
+        $message .= "Nama Peminjam : " . $peminjaman_cbt->nama . PHP_EOL;
+        $message .= "Tanggal : " . $tanggal . PHP_EOL;
+        $message .= "Jam : " . $peminjaman_cbt->jam_awal . "-" . $peminjaman_cbt->jam_akhir  . PHP_EOL;
+        $message .= "Penanggung Jawab : " . $peminjaman_cbt->pj . PHP_EOL;
+        $message .= "----------------------------------"  . PHP_EOL;
+        $message .= "Bukti Peminjaman Laboratorium CBT" . PHP_EOL;
+        $message .= url('peminjaman-cbt/bukti/' . $peminjaman_cbt->kode);
+
+        $telp = Anggota::where('is_petugas', true)->value('telp');
+
+        $this->kirim($telp, $message);
+        $this->kirim($peminjaman_cbt->telp, $message);
+
+        alert()->success('Success', 'Berhasil mengkonfirmasi Peminjaman');
+        return back();
+    }
+
+    public function bukti($kode)
+    {
+        $status = PeminjamanCbt::where('kode', $kode)->value('status');
+
+        if ($status == 'menunggu') {
+            alert()->error('Error!', 'Bukti peminjaman belum dikonfirmasi!');
+            return redirect('peminjaman-cbt/' . $kode);
+        }
+
+        $peminjaman_cbt = PeminjamanCbt::where('kode', $kode)->first();
+        $qr_pj = QrCode::size(60)->generate($peminjaman_cbt->pj);
+
+        $pdf = Pdf::loadview('peminjaman-cbt.bukti', compact('peminjaman_cbt', 'qr_pj'));
+
+        return $pdf->stream('Bukti Peminjaman');
+    }
+
     public function cek_peminjaman($tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir)
     {
         $peminjaman_cbts = PeminjamanCbt::where(function ($query) use ($tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
+            $query->where('status', 'disetujui');
             $query->whereBetween('tanggal_awal', array($tanggal_awal, $tanggal_akhir));
             $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                 $query->whereBetween('jam_awal', array($jam_awal, Carbon::parse($jam_akhir)->subMinute()->format('H:i')));
             });
         })
             ->orWhere(function ($query) use ($tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
+                $query->where('status', 'disetujui');
                 $query->whereBetween('tanggal_awal', array($tanggal_awal, $tanggal_akhir));
                 $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                     $query->whereBetween('jam_akhir', array(Carbon::parse($jam_awal)->addMinute()->format('H:i'), $jam_akhir));
                 });
             })
             ->orWhere(function ($query) use ($tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
+                $query->where('status', 'disetujui');
                 $query->whereBetween('tanggal_awal', array($tanggal_awal, $tanggal_akhir));
                 $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                     $query->where('jam_awal', '<', $jam_awal);
@@ -292,18 +428,21 @@ class PeminjamanCbtController extends Controller
                 });
             })
             ->orWhere(function ($query) use ($tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
+                $query->where('status', 'disetujui');
                 $query->whereBetween('tanggal_akhir', array($tanggal_awal, $tanggal_akhir));
                 $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                     $query->whereBetween('jam_awal', array($jam_awal, Carbon::parse($jam_akhir)->subMinute()->format('H:i')));
                 });
             })
             ->orWhere(function ($query) use ($tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
+                $query->where('status', 'disetujui');
                 $query->whereBetween('tanggal_akhir', array($tanggal_awal, $tanggal_akhir));
                 $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                     $query->whereBetween('jam_akhir', array(Carbon::parse($jam_awal)->addMinute()->format('H:i'), $jam_akhir));
                 });
             })
             ->orWhere(function ($query) use ($tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
+                $query->where('status', 'disetujui');
                 $query->whereBetween('tanggal_akhir', array($tanggal_awal, $tanggal_akhir));
                 $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                     $query->where('jam_awal', '<', $jam_awal);
@@ -327,5 +466,33 @@ class PeminjamanCbtController extends Controller
             ->get();
 
         return $peminjaman_cbts;
+    }
+
+    public function kirim($telp, $message)
+    {
+        $data = [
+            'target' => $telp,
+            'message' => $message
+        ];
+
+        $curl = curl_init();
+        curl_setopt(
+            $curl,
+            CURLOPT_HTTPHEADER,
+            array(
+                "Authorization: BUbqFXgpVtdH3EoMj@u7",
+            )
+        );
+
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($curl, CURLOPT_URL, "https://api.fonnte.com/send");
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+        $result = json_decode(curl_exec($curl));
+
+        return $result;
     }
 }

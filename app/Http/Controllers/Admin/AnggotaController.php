@@ -95,10 +95,20 @@ class AnggotaController extends Controller
             $foto = Anggota::where('id', $id)->value('foto');
         }
 
+        if ($request->is_petugas == 'on') {
+            Anggota::where('is_petugas', true)->update([
+                'is_petugas' => false,
+            ]);
+            $is_petugas = true;
+        } else {
+            $is_petugas = false;
+        }
+
         Anggota::where('id', $id)->update([
             'nama' => $request->nama,
             'telp' => $request->telp,
-            'foto' => $foto
+            'foto' => $foto,
+            'is_petugas' => $is_petugas
         ]);
 
         alert()->success('Success', 'Berhasil memperbarui Anggota');

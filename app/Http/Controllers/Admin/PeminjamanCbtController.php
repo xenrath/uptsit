@@ -8,12 +8,13 @@ use App\Models\Prodi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Jenssegers\Agent\Agent;
 
 class PeminjamanCbtController extends Controller
 {
     public function index(Request $request)
     {
-        $peminjaman_cbts = PeminjamanCbt::where('status', 'menunggu')
+        $peminjaman_cbts = PeminjamanCbt::where('status', 'disetujui')
             ->select(
                 'id',
                 'keperluan',
@@ -153,6 +154,7 @@ class PeminjamanCbtController extends Controller
     {
         $peminjaman_cbts = PeminjamanCbt::where(function ($query) use ($id, $tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
             $query->where('id', '!=', $id);
+            $query->where('status', 'disetujui');
             $query->whereBetween('tanggal_awal', array($tanggal_awal, $tanggal_akhir));
             $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                 $query->whereBetween('jam_awal', array($jam_awal, Carbon::parse($jam_akhir)->subMinute()->format('H:i')));
@@ -160,6 +162,7 @@ class PeminjamanCbtController extends Controller
         })
             ->orWhere(function ($query) use ($id, $tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
                 $query->where('id', '!=', $id);
+                $query->where('status', 'disetujui');
                 $query->whereBetween('tanggal_awal', array($tanggal_awal, $tanggal_akhir));
                 $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                     $query->whereBetween('jam_akhir', array(Carbon::parse($jam_awal)->addMinute()->format('H:i'), $jam_akhir));
@@ -167,6 +170,7 @@ class PeminjamanCbtController extends Controller
             })
             ->orWhere(function ($query) use ($id, $tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
                 $query->where('id', '!=', $id);
+                $query->where('status', 'disetujui');
                 $query->whereBetween('tanggal_awal', array($tanggal_awal, $tanggal_akhir));
                 $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                     $query->where('jam_awal', '<', $jam_awal);
@@ -175,6 +179,7 @@ class PeminjamanCbtController extends Controller
             })
             ->orWhere(function ($query) use ($id, $tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
                 $query->where('id', '!=', $id);
+                $query->where('status', 'disetujui');
                 $query->whereBetween('tanggal_akhir', array($tanggal_awal, $tanggal_akhir));
                 $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                     $query->whereBetween('jam_awal', array($jam_awal, Carbon::parse($jam_akhir)->subMinute()->format('H:i')));
@@ -182,6 +187,7 @@ class PeminjamanCbtController extends Controller
             })
             ->orWhere(function ($query) use ($id, $tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
                 $query->where('id', '!=', $id);
+                $query->where('status', 'disetujui');
                 $query->whereBetween('tanggal_akhir', array($tanggal_awal, $tanggal_akhir));
                 $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                     $query->whereBetween('jam_akhir', array(Carbon::parse($jam_awal)->addMinute()->format('H:i'), $jam_akhir));
@@ -189,6 +195,7 @@ class PeminjamanCbtController extends Controller
             })
             ->orWhere(function ($query) use ($id, $tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir) {
                 $query->where('id', '!=', $id);
+                $query->where('status', 'disetujui');
                 $query->whereBetween('tanggal_akhir', array($tanggal_awal, $tanggal_akhir));
                 $query->where(function ($query) use ($jam_awal, $jam_akhir) {
                     $query->where('jam_awal', '<', $jam_awal);
@@ -212,5 +219,24 @@ class PeminjamanCbtController extends Controller
             ->get();
 
         return $peminjaman_cbts;
+    }
+
+    public function hubungi($id)
+    {
+        $telp = PeminjamanCbt::where('id', $id)->value('telp');
+
+        if (is_null($telp)) {
+            alert()->error('Error', 'Gagal menemukan Nomor Telepon!');
+            return back();
+        }
+
+        $agent = new Agent;
+        $desktop = $agent->isDesktop();
+
+        if ($desktop) {
+            return redirect()->away('https://web.whatsapp.com/send?phone=' . $telp);
+        } else {
+            return redirect()->away('https://wa.me/' . $telp);
+        }
     }
 }

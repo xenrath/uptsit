@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('foto')->nullable();
             $table->string('telp')->unique();
+            $table->boolean('is_petugas')->default(false);
             $table->timestamps();
         });
     }

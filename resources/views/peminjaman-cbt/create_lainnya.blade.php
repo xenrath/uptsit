@@ -187,9 +187,12 @@
                                                 name="pj" placeholder="Nama PJ Acara" value="{{ old('pj') }}">
                                         </div>
                                         <div class="form-group mb-2">
-                                            <label for="telp">Nomor yang dapat dihubungi</label>
+                                            <label for="telp">
+                                                Nomor telepon Peminjam
+                                                <small class="text-muted">(08xxxxxxxxxx)</small>
+                                            </label>
                                             <input type="text" class="form-control rounded-0" id="telp"
-                                                name="telp" placeholder="Nomor telepon Peminjam"
+                                                name="telp" placeholder="Nomor "
                                                 value="{{ old('telp') }}">
                                         </div>
                                     </div>
@@ -255,7 +258,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         @if ($cek->tanggal_awal == $cek->tanggal_akhir)
-                                            {{ Carbon\Carbon::parse($cek->tanggal_awal)->translatedFormat('d F') }}, 
+                                            {{ Carbon\Carbon::parse($cek->tanggal_awal)->translatedFormat('d F') }},
                                         @else
                                             {{ Carbon\Carbon::parse($cek->tanggal_awal)->translatedFormat('d F') }}-{{ Carbon\Carbon::parse($cek->tanggal_akhir)->translatedFormat('d F') }},
                                         @endif

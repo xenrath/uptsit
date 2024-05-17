@@ -12,6 +12,7 @@ class Anggota extends Model
     protected $fillable = [
         'nama',
         'foto',
-        'telp'
+        'telp',
+        'is_petugas'
     ];
 }

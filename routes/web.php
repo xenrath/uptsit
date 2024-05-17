@@ -29,7 +29,8 @@ Route::get('peminjaman-cbt/pembelajaran', [\App\Http\Controllers\PeminjamanCbtCo
 Route::get('peminjaman-cbt/lainnya', [\App\Http\Controllers\PeminjamanCbtController::class, 'create_lainnya']);
 Route::post('peminjaman-cbt/pembelajaran', [\App\Http\Controllers\PeminjamanCbtController::class, 'store_pembelajaran']);
 Route::post('peminjaman-cbt/lainnya', [\App\Http\Controllers\PeminjamanCbtController::class, 'store_lainnya']);
-Route::resource('peminjaman-cbt', PeminjamanCbtController::class)->only('index', 'create', 'store');
+Route::get('peminjaman-cbt/bukti/{kode}', [\App\Http\Controllers\PeminjamanCbtController::class, 'bukti']);
+Route::resource('peminjaman-cbt', PeminjamanCbtController::class)->except('edit', 'delete');
 
 Route::get('pengaduan', [App\Http\Controllers\WebController::class, 'pengaduan']);
 Route::post('pengaduan/create', [App\Http\Controllers\WebController::class, 'pengaduan_create']);
@@ -67,11 +68,13 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('hosting/{id}/selesai', [\App\Http\Controllers\Admin\HostingController::class, 'selesai']);
     Route::resource('hosting', \App\Http\Controllers\Admin\HostingController::class)->only(['index', 'show']);
 
+    Route::get('peminjaman-cbt/hubungi/{id}', [\App\Http\Controllers\Admin\PeminjamanCbtController::class, 'hubungi']);
     Route::post('peminjaman-cbt/ubah-waktu/{id}', [\App\Http\Controllers\Admin\PeminjamanCbtController::class, 'ubah_waktu']);
     Route::get('peminjaman-cbt/selesaikan/{id}', [\App\Http\Controllers\Admin\PeminjamanCbtController::class, 'selesaikan']);
     Route::get('peminjaman-cbt/riwayat', [\App\Http\Controllers\Admin\PeminjamanCbtController::class, 'riwayat']);
     Route::resource('peminjaman-cbt', \App\Http\Controllers\Admin\PeminjamanCbtController::class);
-    Route::resource('peminjaman-cbt', \App\Http\Controllers\Admin\PeminjamanCbtController::class);
+
+    Route::resource('prodi', \App\Http\Controllers\Admin\ProdiController::class);
 });
 
 Route::middleware('tamu')->prefix('tamu')->group(function () {

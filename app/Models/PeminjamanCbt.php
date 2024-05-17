@@ -10,6 +10,7 @@ class PeminjamanCbt extends Model
     use HasFactory;
 
     protected $fillable = [
+        'kode',
         'keperluan',
         'nama',
         'prodi_id',

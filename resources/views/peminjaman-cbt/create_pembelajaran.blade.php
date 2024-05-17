@@ -50,7 +50,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Form Peminjaman</h3>
                             </div>
-                            <form action="{{ url('peminjaman-cbt/pembelajaran') }}" method="post" autocomplete="off">
+                            <form action="{{ url('peminjaman-cbt/pembelajaran') }}" method="post">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group mb-2">
@@ -152,6 +152,15 @@
                                         <label for="pj">Penanggung Jawab</label>
                                         <input type="text" class="form-control rounded-0" id="pj"
                                             name="pj" placeholder="Nama Dosen" value="{{ old('pj') }}">
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label for="telp">
+                                            Nomor Peminjam
+                                            <small class="text-muted">(08xxxxxxxxxx)</small>
+                                        </label>
+                                        <input type="text" class="form-control rounded-0" id="telp"
+                                            name="telp" placeholder="Nomor yang dapat dihubungi"
+                                            value="{{ old('telp') }}">
                                     </div>
                                 </div>
                                 <div class="card-footer text-right">

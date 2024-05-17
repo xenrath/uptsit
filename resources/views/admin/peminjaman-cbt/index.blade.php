@@ -75,12 +75,15 @@
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td>
                                                 @if ($peminjaman_cbt->keperluan == 'pembelajaran')
-                                                    {{ $peminjaman_cbt->nama }}
-                                                    <br>
-                                                    <small class="text-muted">({{ $peminjaman_cbt->prodi->nama }})</small>
+                                                    <a href="{{ url('admin/peminjaman-cbt/hubungi/' . $peminjaman_cbt->id) }}" target="_blank">
+                                                        {{ $peminjaman_cbt->nama }}
+                                                        <br>
+                                                        <small
+                                                            class="text-muted">({{ $peminjaman_cbt->prodi->nama }})</small>
+                                                    </a>
                                                 @else
                                                     <a
-                                                        href="{{ url('admin/peminjaman-cbt/hubungi/' . $peminjaman_cbt->id) }}">{{ $peminjaman_cbt->nama }}</a>
+                                                        href="{{ url('admin/peminjaman-cbt/hubungi/' . $peminjaman_cbt->id) }}" target="_blank">{{ $peminjaman_cbt->nama }}</a>
                                                 @endif
                                             </td>
                                             <td>
@@ -302,7 +305,7 @@
                             <strong>
                                 {{ old('jam_awal') }}-{{ old('jam_akhir') }}
                             </strong>
-                            sudah digunakan.
+                            sudah dipinjam.
                         </p>
                         @foreach (session('cek') as $cek)
                             <div class="border rounded mb-2 p-3">

@@ -108,3 +108,15 @@
         </p>
     </a>
 </li>
+<li class="nav-header">
+    <hr class="m-0 bg-light">
+</li>
+<li class="nav-header">LAINNYA</li>
+<li class="nav-item">
+    <a href="{{ url('admin/prodi') }}" class="nav-link {{ request()->is('admin/prodi*') ? 'active' : '' }}">
+        <i class="nav-icon far fa-circle"></i>
+        <p>
+            Data Prodi
+        </p>
+    </a>
+</li>
