@@ -47,7 +47,8 @@ class UnitController extends Controller
 
         if ($validator->fails()) {
             $error = $validator->errors()->all();
-            return back()->withInput()->with('error', $error);
+            alert()->error('Error', 'Gagal memperbarui Identitas Unit!');
+            return back()->withInput()->withError('error', $error);
         }
 
         Unit::first()->update([
@@ -60,6 +61,8 @@ class UnitController extends Controller
             'telp' => $request->telp,
         ]);
 
-        return back()->with('success', 'Berhasil memperbarui Identitas Unit');
+        alert()->success('Success', 'Berhasil memperbarui Identitas Unit');
+
+        return back();
     }
 }

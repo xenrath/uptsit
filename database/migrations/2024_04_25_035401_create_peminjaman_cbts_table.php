@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('keterangan');
             $table->string('pj');
             $table->string('telp')->nullable();
+            $table->string('ttd')->nullable();
             $table->enum('status', ['menunggu', 'disetujui', 'selesai']);
             $table->timestamps();
         });

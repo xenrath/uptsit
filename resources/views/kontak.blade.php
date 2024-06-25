@@ -32,35 +32,13 @@
                 <h2 class="mb-4 mt-2">Unit Sistem Informasi dan Teknologi</h2>
                 <div class="row">
                     <div class="col-md-6">
-                        <p>Saiful Labib Marzuqi Hidayat</p>
-                        <a href="{{ url('hubungi') }}" class="btn btn-success">
-                            <i class="ti-headphone-alt mr-2"></i>Hubungi Kami
+                        <p>{{ $user->nama }}</p>
+                        <a href="{{ url('hubungi/' . $user->telp) }}" class="btn btn-success" target="_blank">
+                            <i class="ti-headphone-alt mr-2"></i>
+                            Hubungi Kami
                         </a>
                     </div>
                 </div>
-                {{-- <table>
-          @foreach ($anggotas as $anggota)
-          <tr style="height: 40px">
-            <td>{{ $anggota->nama }}</td>
-            <td style="width: 24px; text-align: center;">:</td>
-            <td>
-              <a href="{{ url('hubungi/' . $anggota->id) }}" class="hubungi" target="_blank">0{{ $anggota->telp }}</a>
-            </td>
-          </tr>
-          @endforeach
-        </table> --}}
-
-                <ul class="social-icons list-inline mt-5">
-                    <li class="list-inline-item">
-                        <a href="http://www.themefisher.com"><i class="fab fa-facebook-f"></i></a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="http://www.themefisher.com"><i class="fab fa-twitter"></i></a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="http://www.themefisher.com"><i class="fab fa-linkedin-in"></i></a>
-                    </li>
-                </ul>
             </div>
         </div>
     </section>

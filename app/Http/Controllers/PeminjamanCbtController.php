@@ -200,7 +200,7 @@ class PeminjamanCbtController extends Controller
 
         alert()->success('Success', 'Berhasil membuat Peminjaman');
 
-        return redirect('peminjaman-cbt');
+        return redirect('peminjaman-cbt/create');
     }
 
     public function store_lainnya(Request $request)
@@ -297,7 +297,7 @@ class PeminjamanCbtController extends Controller
 
         alert()->success('Success', 'Berhasil membuat Peminjaman');
 
-        return redirect('peminjaman-cbt');
+        return redirect('peminjaman-cbt/create');
     }
 
     // Konfirmasi Peminjaman
@@ -377,10 +377,15 @@ class PeminjamanCbtController extends Controller
         $message .= "Bukti Peminjaman Laboratorium CBT" . PHP_EOL;
         $message .= url('peminjaman-cbt/bukti/' . $peminjaman_cbt->kode);
 
-        $telp = Anggota::where('is_petugas', true)->value('telp');
+        $telp = Anggota::where('is_cbt', true)->value('telp');
 
-        $this->kirim($telp, $message);
         $this->kirim($peminjaman_cbt->telp, $message);
+
+        if ($telp) {
+            $this->kirim($telp, $message);
+        } else {
+            $this->kirim('085328481969', $message);
+        }
 
         alert()->success('Success', 'Berhasil mengkonfirmasi Peminjaman');
         return back();
@@ -400,7 +405,7 @@ class PeminjamanCbtController extends Controller
 
         $pdf = Pdf::loadview('peminjaman-cbt.bukti', compact('peminjaman_cbt', 'qr_pj'));
 
-        return $pdf->stream('Bukti Peminjaman');
+        return $pdf->stream('Bukti Peminjaman (' . $peminjaman_cbt->kode . ')');
     }
 
     public function cek_peminjaman($tanggal_awal, $tanggal_akhir, $jam_awal, $jam_akhir)

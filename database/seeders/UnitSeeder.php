@@ -17,12 +17,12 @@ class UnitSeeder extends Seeder
     {
         $unit = [
             'nama' => 'Unit Sistem Informasi dan Teknologi',
-            'deskripsi' => 'Unit Sistem Informasi dan Teknologi merupakan unit pelaksanaan teknis dibidang Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil blanditiis dicta fuga laborum aspernatur quo itaque tempore similique rem mollitia beatae inventore fugit aliquid perferendis exercitationem sint, excepturi odio corrupti.',
+            'deskripsi' => 'Unit Sistem Informasi dan Teknologi (SIT) merupakan unit pelaksanaan teknis universitas yang peran penting dalam menyediakan dan mengelola infrastruktur teknologi yang mendukung seluruh kegiatan akademik dan administratif.',
             'sistem' => '30',
             'website' => '20',
             'ap' => '70',
-            'email' => 'it@bhamada@gmail.com',
-            'telp' => '(+123)4567',
+            'email' => 'it@bhamada.com',
+            'telp' => '+62 877-3879-3425',
         ];
 
         Unit::create($unit);

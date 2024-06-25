@@ -152,7 +152,7 @@
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <ul class="pl-4 mb-0">
-                                                                                @foreach (array_reverse($peminjaman_cbt->items) as $key => $item)
+                                                                                @foreach ($peminjaman_cbt->items as $key => $item)
                                                                                     <li>
                                                                                         {{ $item }}
                                                                                         @if (!empty($peminjaman_cbt->jumlahs[$key]))

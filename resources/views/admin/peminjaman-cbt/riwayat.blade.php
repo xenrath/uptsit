@@ -20,12 +20,7 @@
                         <a href="{{ url('admin/peminjaman-cbt') }}" class="btn btn-secondary btn-flat float-left mr-2">
                             <i class="fas fa-arrow-left"></i>
                         </a>
-                        <h1>Riwayat Peminjaman CBT</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item active">Peminjaman CBT</li>
-                        </ol>
+                        <h1>Riwayat Peminjaman</h1>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
@@ -83,7 +78,7 @@
                                                 @if ($peminjaman_cbt->items)
                                                     <hr class="my-2">
                                                     <ul class="pl-4 mb-0">
-                                                        @foreach (array_reverse($peminjaman_cbt->items) as $key => $item)
+                                                        @foreach ($peminjaman_cbt->items as $key => $item)
                                                             <li>
                                                                 {{ $item }}
                                                                 @if (!empty($peminjaman_cbt->jumlahs[$key]))

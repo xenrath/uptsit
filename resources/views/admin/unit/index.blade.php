@@ -70,43 +70,45 @@
                         <div class="card-body">
                             <div class="form-group mb-2">
                                 <label for="nama">Nama Unit</label>
-                                <input type="text" class="form-control" id="nama" name="nama"
-                                    placeholder="Masukan nama unit" value="{{ old('nama', $unit->nama) }}">
+                                <input type="text" class="form-control rounded-0 @error('nama') is-invalid @enderror"
+                                    id="nama" name="nama" placeholder="Masukan nama unit"
+                                    value="{{ old('nama', $unit->nama) }}">
+                                @error('nama')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group mb-2">
                                 <label for="deskripsi">Deskripsi</label>
-                                <textarea id="summernote" name="deskripsi">
-                {{ old('deskripsi', $unit->deskripsi) }}
-              </textarea>
+                                <textarea class="form-control rounded-0" name="deskripsi" rows="4">{{ old('deskripsi', $unit->deskripsi) }}</textarea>
                             </div>
                             <div class="form-group mb-2">
                                 <label for="sistem">Jumlah Sistem</label>
-                                <input type="number" class="form-control" id="sistem" name="sistem"
+                                <input type="number" class="form-control rounded-0" id="sistem" name="sistem"
                                     placeholder="Masukan jumlah sistem" value="{{ old('sistem', $unit->sistem) }}">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="website">Jumlah Website</label>
-                                <input type="number" class="form-control" id="website" name="website"
+                                <input type="number" class="form-control rounded-0" id="website" name="website"
                                     placeholder="Masukan jumlah website" value="{{ old('website', $unit->website) }}">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="ap">Jumlah Akses Point</label>
-                                <input type="number" class="form-control" id="ap" name="ap"
+                                <input type="number" class="form-control rounded-0" id="ap" name="ap"
                                     placeholder="Masukan jumlah akses point" value="{{ old('ap', $unit->ap) }}">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email"
+                                <input type="email" class="form-control rounded-0" id="email" name="email"
                                     placeholder="Masukan email unit" value="{{ old('email', $unit->email) }}">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="telp">Telepon Unit</label>
-                                <input type="text" class="form-control" id="telp" name="telp"
+                                <input type="text" class="form-control rounded-0" id="telp" name="telp"
                                     placeholder="Masukan nomor telepon unit" value="{{ old('telp', $unit->telp) }}">
                             </div>
                         </div>
                         <div class="card-footer text-right">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="submit" class="btn btn-primary btn-sm btn-flat">Simpan</button>
                         </div>
                     </form>
                 </div>

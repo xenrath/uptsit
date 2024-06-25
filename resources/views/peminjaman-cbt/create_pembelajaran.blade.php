@@ -162,6 +162,9 @@
                                             name="telp" placeholder="Nomor yang dapat dihubungi"
                                             value="{{ old('telp') }}">
                                     </div>
+                                    <br>
+                                    <small class="text-muted">* Note : peminjaman ini hanya berlaku untuk satu dosen /
+                                        matakuliah</small>
                                 </div>
                                 <div class="card-footer text-right">
                                     <button type="button" class="btn btn-info btn-flat" id="btn-cek"

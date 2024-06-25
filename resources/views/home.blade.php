@@ -10,8 +10,11 @@
                         <span class="d-block mb-4 text-white">Selamat Datang di</span>
                         <h1 class="animated fadeInUp mb-4">UPT Sistem Informasi<br>& Teknologi</h1>
                         <p>Universitas Bhamada Slawi</p>
-                        <a href="#" class="btn btn-main animated fadeInUp btn-round-full" aria-label="Get started">GET
-                            STARTED<i class="btn-icon fa fa-angle-right ml-2"></i></a>
+                        <a href="{{ url('about') }}" class="btn btn-main animated fadeInUp btn-round-full"
+                            aria-label="Get started">
+                            Lihat
+                            <i class="btn-icon fa fa-angle-right ml-2"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -29,7 +32,7 @@
                     </div>
                 </div>
             </div>
-            <p class="mb-5">{!! $unit->deskripsi !!}</p>
+            <p class="mb-5">{{ $unit->deskripsi }}</p>
         </div>
     </section>
     <!-- Section Intro END -->
@@ -60,7 +63,13 @@
                                     </td>
                                     <td class="description">
                                         <span class="h6 text-color">Misi</span>
-                                        <p>{{ $visimisi->misi }}</p>
+                                        <ol style="padding-left: 16px;">
+                                            @foreach ($visimisi->misi as $misi)
+                                                <li style="padding-left: 8px;">
+                                                    <p class="mb-0">{{ $misi }}</p>
+                                                </li>
+                                            @endforeach
+                                        </ol>
                                     </td>
                                 </tr>
                             </table>

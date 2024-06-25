@@ -10,11 +10,13 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
+            $table->string('telp')->unique();
             $table->string('password');
             $table->string('nama');
-            $table->string('jabatan')->nullable();
-            $table->enum('role', ['admin', 'tamu']);
+            $table->string('foto')->nullable();
+            $table->enum('bagian', ['admin', 'programmer', 'jaringan', 'support']);
+            $table->boolean('is_cbt')->default(false);
+            $table->enum('role', ['admin', 'user']);
             $table->timestamps();
         });
     }

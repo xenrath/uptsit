@@ -9,16 +9,10 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
+                        <a href="{{ url('admin/tupoksi') }}" class="btn btn-secondary btn-flat float-left mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
                         <h1 class="m-0">Tupoksi Unit</h1>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item">
-                                <a href="{{ url('admin/tupoksi') }}">Tupoksi Unit</a>
-                            </li>
-                            <li class="breadcrumb-item active">Tambah</li>
-                        </ol>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -30,81 +24,47 @@
 
         <section class="content">
             <div class="container-fluid">
-                @if (session('error'))
-                    <div class="alert alert-danger alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <h5>
-                            <i class="icon fas fa-ban"></i> Error!
-                        </h5>
-                        @foreach (session('error') as $error)
-                            - {{ $error }} <br>
-                        @endforeach
-                    </div>
-                @endif
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Tambah User</h3>
+                        <h3 class="card-title">Tambah Tupoksi</h3>
                     </div>
                     <!-- /.card-header -->
                     <form action="{{ url('admin/tupoksi') }}" method="post" enctype="multipart/form-data"
                         autocomplete="off">
                         @csrf
-                        @method('PUT')
                         <div class="card-body">
-                            <div class="form-group">
+                            <div class="form-group mb-2">
                                 <label for="nama">Nama Tupoksi</label>
-                                <input type="text" class="form-control" id="nama" name="nama"
-                                    placeholder="Masukan nama tupoksi" value="{{ old('nama') }}">
+                                <input type="text" class="form-control rounded-0" id="nama" name="nama"
+                                    value="{{ old('nama') }}">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-2">
                                 <label for="deskripsi">Deskripsi</label>
-                                <textarea id="summernote" name="deskripsi">
-                {{ old('deskripsi') }}
-              </textarea>
+                                <textarea class="form-control rounded-0" rows="4" name="deskripsi">{{ old('deskripsi') }}</textarea>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-2">
                                 <label for="icon">
                                     Ikon
-                                    <small>(cari di <a href="https://themify.me/themify-icons" target="_blank">Themify
-                                            Icons</a>)</small>
+                                    <small>
+                                        (contoh: ti-user | referensi <a href="https://themify.me/themify-icons"
+                                            target="_blank">themify icons</a>)
+                                    </small>
                                 </label>
-                                <input type="text" class="form-control" id="icon" name="icon"
-                                    placeholder="contoh: ti-user" value="{{ old('icon') }}">
+                                <input type="text" class="form-control rounded-0" id="icon" name="icon"
+                                    value="{{ old('icon') }}">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-2">
                                 <label for="file">File</label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="file" name="file">
-                                    <label class="custom-file-label" for="file">Pilih File</label>
-                                </div>
+                                <input type="file" class="form-control rounded-0" id="file" name="file"
+                                    accept="application/pdf">
                             </div>
                         </div>
                         <div class="card-footer text-right">
-                            <button type="reset" class="btn btn-secondary">Reset</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="submit" class="btn btn-primary btn-sm btn-flat">Simpan</button>
                         </div>
                     </form>
                 </div>
             </div>
         </section>
-        <script>
-            var role = document.getElementById('role');
-            var layout_layanan = document.getElementById('layout_layanan');
-            var layanan_id = document.getElementById('layanan_id');
-            if (role.value == 'teknisi') {
-                layout_layanan.style.display = "inline";
-            } else {
-                layout_layanan.style.display = "none";
-                layanan_id.value = "";
-            }
-            role.addEventListener('change', function() {
-                if (role.value == 'teknisi') {
-                    layout_layanan.style.display = "inline";
-                } else {
-                    layout_layanan.style.display = "none";
-                    layanan_id.value = "";
-                }
-            });
-        </script>
     </div>
 @endsection

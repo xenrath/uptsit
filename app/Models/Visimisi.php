@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Visimisi extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'visi',
+        'misi',
+    ];
+
+    protected $casts = [
+        'misi' => 'array',
+    ];
 }

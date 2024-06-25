@@ -57,24 +57,23 @@ class AuthController extends Controller
     public function proses_login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required',
+            'telp' => 'required',
             'password' => 'required',
         ], [
-            'email.required' => 'Username harus diisi!',
+            'telp.required' => 'No. Telepon harus diisi!',
             'password.required' => 'Password harus diisi!',
         ]);
 
         if ($validator->fails()) {
-            $error = $validator->errors()->all();
-            alert()->error('Isi data dengan benar!');
-            return back()->withInput()->with('error', $error);
+            alert()->error('Error', 'Isi data dengan benar!');
+            return back()->withInput()->withErrors($validator);
         }
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt(['telp' => $request->telp, 'password' => $request->password])) {
             $request->session()->regenerate();
             return redirect('check-user');
         } else {
-            alert()->error('Username atau Password salah!');
+            alert()->error('Error', 'No. Telepon atau Password salah!');
             return back()->withInput();
         }
     }
@@ -88,10 +87,15 @@ class AuthController extends Controller
 
     public function check_user()
     {
-        if (auth()->user()->role == 'admin') {
-            return redirect('admin');
-        } else {
-            return redirect('tamu');
+        if (auth()->check()) {
+            if (auth()->user()->isAdmin()) {
+                return redirect('admin');
+            }
+            if (auth()->user()->role == 'user') {
+                return redirect('user');
+            }
         }
+
+        return redirect('login');
     }
 }

@@ -35,7 +35,6 @@
 </head>
 
 <body>
-
     <!-- Header Start -->
     <header class="navigation">
         <div id="navbar">
@@ -106,7 +105,8 @@
                                         Pengaduan</a>
                                 </div> --}}
                                 <div class="my-2 my-md-0 ml-lg-4 text-center">
-                                    <a href="{{ url('peminjaman-cbt/create') }}" class="btn btn-solid-border btn-round-full"
+                                    <a href="{{ url('peminjaman-cbt/create') }}"
+                                        class="btn btn-solid-border btn-round-full"
                                         style="{{ request()->is('peminjaman-cbt/create') ? 'background-color: #FDED02; color: rgba(0, 0, 0, 0.65);' : '' }}">Peminjaman
                                         CBT</a>
                                 </div>
@@ -150,22 +150,30 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-sm-6">
+                    @php
+                        $unit = \App\Models\Unit::select('nama', 'email', 'telp')->first();
+                        $telp = \App\Models\User::where('role', 'admin')->first()->value('telp');
+                    @endphp
                     <div class="widget">
                         <div class="logo mb-4">
-                            <h3>Unit Sistem Informasi dan Informasi</h3>
+                            <h3>{{ $unit->nama }}</h3>
                             <h4>Universitas Bhamada Slawi</h4>
                         </div>
                         <h6>
-                            <span>it@bhamada.ac.id</span>
+                            <span>{{ $unit->email }}</span>
                         </h6>
-                        <span class="text-color h4">+23-456-6588</span>
+                        <a href="{{ url('hubungi/' . $telp) }}">
+                            <span class="text-color h4">
+                                {{ $unit->telp }}
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>
 
             <div class="footer-btm pt-4 pb-2">
                 <div class="copyright">
-                    Copyright &copy; 2023, Designed &amp; Developed by <a href="">IT Bhamada</a>
+                    Copyright &copy; 2023, Designed &amp; Developed by <a href="{{ url('/') }}">IT Bhamada</a>
                 </div>
             </div>
         </div>

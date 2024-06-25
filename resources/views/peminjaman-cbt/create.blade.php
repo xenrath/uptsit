@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6 mb-2">
-                        <a href="" class="btn btn-secondary btn-flat float-left mr-2">
+                        <a href="{{ url('/') }}" class="btn btn-secondary btn-flat float-left mr-2">
                             <i class="fas fa-arrow-left"></i>
                         </a>
                         <h1>Peminjaman CBT</h1>

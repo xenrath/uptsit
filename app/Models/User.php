@@ -13,10 +13,12 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'email',
+        'telp',
         'password',
         'nama',
-        'jabatan',
+        'foto',
+        'bagian',
+        'is_cbt',
         'role'
     ];
 
@@ -27,6 +29,15 @@ class User extends Authenticatable
     public function isAdmin()
     {
         if ($this->role == 'admin') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function isUser()
+    {
+        if ($this->role == 'user') {
             return true;
         } else {
             return false;

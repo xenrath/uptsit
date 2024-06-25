@@ -9,10 +9,12 @@ use App\Models\Pengaduan;
 use App\Models\Prodi;
 use App\Models\Tupoksi;
 use App\Models\Unit;
+use App\Models\User;
 use App\Models\Visimisi;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Jenssegers\Agent\Agent;
 
 class WebController extends Controller
 {
@@ -32,9 +34,11 @@ class WebController extends Controller
 
         $unit = Unit::first();
         $visimisi = Visimisi::first();
-        $anggotas = Anggota::get();
+        $users = User::where('role', 'user')
+            ->select('nama', 'telp', 'bagian', 'foto')
+            ->get();
 
-        return view('about', compact('unit', 'visimisi', 'anggotas'));
+        return view('about', compact('unit', 'visimisi', 'users'));
     }
 
     public function tupoksi()
@@ -86,25 +90,25 @@ class WebController extends Controller
     {
         SEOMeta::setTitle('Kontak');
 
-        $anggotas = Anggota::get();
+        $user = User::where('role', 'admin')->select('telp', 'nama')->first();
 
-        return view('kontak', compact('anggotas'));
+        return view('kontak', compact('user'));
     }
 
-    public function hubungi($id)
+    public function hubungi($telp)
     {
-        $anggota = Anggota::where('id', $id)->first();
+        $agent = new Agent;
+        $desktop = $agent->isDesktop();
 
-        if (true) {
-            return redirect()->away('https://web.whatsapp.com/send?phone=+62' . $anggota->telp);
+        if ($desktop) {
+            return redirect()->away('https://web.whatsapp.com/send?phone=+62' . $telp);
         } else {
-            return redirect()->away('https://wa.me/+62' . $anggota->telp);
+            return redirect()->away('https://wa.me/+62' . $telp);
         }
     }
 
     public function peminjaman_cbt()
     {
-        
     }
 
     public function peminjaman_cbt_store(Request $request)
@@ -159,7 +163,7 @@ class WebController extends Controller
                 array_push($error, $value);
             }
         }
-        
+
         if ($error) {
             return back()->withInput()->with('error', $error);
         }

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('visimisis', function (Blueprint $table) {
             $table->id();
             $table->text('visi');
-            $table->text('misi');
+            $table->json('misi');
             $table->timestamps();
         });
     }

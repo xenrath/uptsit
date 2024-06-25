@@ -115,7 +115,7 @@
             <td class="td-1">
                 @if ($peminjaman_cbt->items)
                     <ul style="padding-left: 14px; padding-top: 0px; margin: 0px;">
-                        @foreach (array_reverse($peminjaman_cbt->items) as $key => $item)
+                        @foreach ($peminjaman_cbt->items as $key => $item)
                             <li>
                                 {{ $item }}
                                 @if (!empty($peminjaman_cbt->jumlahs[$key]))

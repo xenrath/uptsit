@@ -21,7 +21,11 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item active">Peminjaman CBT</li>
+                            <li class="breadcrumb-item active">
+                                <a href="{{ url('admin/peminjaman-cbt/riwayat') }}" style="text-decoration: underline">
+                                    Riwayat Peminjaman
+                                </a>
+                            </li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -50,8 +54,8 @@
                             <button type="button" class="btn btn-info btn-sm btn-flat" id="btn-cek" data-toggle="modal"
                                 data-target="#modal-cek" hidden>Cek
                             </button>
-                            <a href="{{ url('admin/peminjaman-cbt/riwayat') }}" style="text-decoration: underline">
-                                Riwayat Peminjaman
+                            <a href="{{ url('admin/peminjaman-cbt/create') }}" class="btn btn-primary btn-sm btn-flat">
+                                Buat
                             </a>
                         </div>
                     </div>
@@ -75,15 +79,16 @@
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td>
                                                 @if ($peminjaman_cbt->keperluan == 'pembelajaran')
-                                                    <a href="{{ url('admin/peminjaman-cbt/hubungi/' . $peminjaman_cbt->id) }}" target="_blank">
+                                                    <a href="{{ url('admin/peminjaman-cbt/hubungi/' . $peminjaman_cbt->id) }}"
+                                                        target="_blank">
                                                         {{ $peminjaman_cbt->nama }}
                                                         <br>
                                                         <small
                                                             class="text-muted">({{ $peminjaman_cbt->prodi->nama }})</small>
                                                     </a>
                                                 @else
-                                                    <a
-                                                        href="{{ url('admin/peminjaman-cbt/hubungi/' . $peminjaman_cbt->id) }}" target="_blank">{{ $peminjaman_cbt->nama }}</a>
+                                                    <a href="{{ url('admin/peminjaman-cbt/hubungi/' . $peminjaman_cbt->id) }}"
+                                                        target="_blank">{{ $peminjaman_cbt->nama }}</a>
                                                 @endif
                                             </td>
                                             <td>
@@ -122,7 +127,7 @@
                                                 @if ($peminjaman_cbt->items)
                                                     <hr class="my-2">
                                                     <ul class="pl-4 mb-0">
-                                                        @foreach (array_reverse($peminjaman_cbt->items) as $key => $item)
+                                                        @foreach ($peminjaman_cbt->items as $key => $item)
                                                             <li>
                                                                 {{ $item }}
                                                                 @if (!empty($peminjaman_cbt->jumlahs[$key]))
