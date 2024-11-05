@@ -23,6 +23,7 @@ class PeminjamanCbt extends Model
         'keterangan',
         'pj',
         'telp',
+        'pembatalan',
         'status'
     ];
 

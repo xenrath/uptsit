@@ -8,11 +8,6 @@ use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $users = [
@@ -44,7 +39,7 @@ class UserSeeder extends Seeder
                 'role' => 'user',
             ],
             [
-                'telp' => '082323679226',
+                'telp' => '088296460720',
                 'password' => bcrypt('bhamada'),
                 'nama' => 'Masruhin',
                 'foto' => 'user/masruhin.jpg',

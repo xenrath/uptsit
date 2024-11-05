@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggota;
+use App\Models\User;
 use App\Models\PeminjamanCbt;
 use App\Models\Prodi;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -377,7 +377,7 @@ class PeminjamanCbtController extends Controller
         $message .= "Bukti Peminjaman Laboratorium CBT" . PHP_EOL;
         $message .= url('peminjaman-cbt/bukti/' . $peminjaman_cbt->kode);
 
-        $telp = Anggota::where('is_cbt', true)->value('telp');
+        $telp = User::where('is_cbt', true)->value('telp');
 
         $this->kirim($peminjaman_cbt->telp, $message);
 

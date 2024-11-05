@@ -11,22 +11,43 @@ class Perangkat extends Model
 
     protected $fillable = [
         'kode',
-        'lokasi',
-        'unit',
         'karyawan_id',
-        'spek_barang_jenis_id',
-        'spek_barang_merek_id',
+        'unit_id',
+        'jenis',
+        'merek',
+        'model',
         'no_seri',
-        'spek_barang_model_id',
-        'spek_storage_tipe_id',
-        'storage_kapasitas',
-        'spek_storage_merek_id',
-        'spek_ram_tipe_id',
-        'spek_ram_merek_id',
+        'ram_tipe',
         'ram_kapasitas',
-        'psu_merek',
+        'ram_merek',
+        'is_ram_tambahan',
+        'ram_tambahan_kapasitas',
+        'ram_tambahan_merek',
+        'storage_tipe',
+        'storage_kapasitas',
+        'storage_merek',
+        'is_storage_tambahan',
+        'storage_tambahan_tipe',
+        'storage_tambahan_kapasitas',
+        'storage_tambahan_merek',
         'psu_kapasitas',
-        'heatsink_merek',
+        'psu_merek',
         'heatsink_model',
+        'heatsink_merek',
+        'monitor_ukuran',
+        'monitor_merek',
+        'keyboard_merek',
+        'mouse_merek',
+        'keterangan',
     ];
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bagian;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,20 +12,28 @@ class KaryawanController extends Controller
 {
     public function index()
     {
-        $karyawans = Karyawan::select('id', 'nama', 'telp')->get();
+        $paginate = ceil(Karyawan::count() / 7);
+        $karyawans = Karyawan::select('id', 'nama', 'telp', 'bagian_id')
+            ->with('bagian', function ($query) {
+                $query->select('id', 'unit_id', 'sebagai')->with('unit:id,nama');
+            })
+            ->paginate($paginate);
+        $bagians = Bagian::select('id', 'unit_id', 'sebagai')->with('unit:id,nama')->get();
 
-        return view('admin.karyawan.index', compact('karyawans'));
+        return view('admin.karyawan.index', compact('karyawans', 'bagians'));
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'telp' => 'required|unique:users,telp',
+            'telp' => 'required|unique:karyawans,telp',
+            'bagian_id' => 'required',
         ], [
             'nama.required' => 'Nama Karyawan tidak boleh kosong!',
             'telp.required' => 'No Telepon tidak boleh kosong!',
             'telp.unique' => 'No Telepon sudah digunakan!',
+            'bagian_id.required' => 'Bagian harus dipilih!',
         ]);
 
         if ($validator->fails()) {
@@ -35,6 +44,7 @@ class KaryawanController extends Controller
         $karyawan = Karyawan::create([
             'nama' => $request->nama,
             'telp' => $request->telp,
+            'bagian_id' => $request->bagian_id,
         ]);
 
         if (!$karyawan) {
@@ -51,11 +61,13 @@ class KaryawanController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'telp' => 'required|unique:users,telp',
+            'telp' => 'required|unique:karyawans,telp,' . $id . ',id',
+            'bagian_id' => 'required',
         ], [
             'nama.required' => 'Nama Karyawan tidak boleh kosong!',
             'telp.required' => 'No Telepon tidak boleh kosong!',
             'telp.unique' => 'No Telepon sudah digunakan!',
+            'bagian_id.required' => 'Bagian harus dipilih!',
         ]);
 
         if ($validator->fails()) {
@@ -66,6 +78,7 @@ class KaryawanController extends Controller
         $karyawan = Karyawan::where('id', $id)->update([
             'nama' => $request->nama,
             'telp' => $request->telp,
+            'bagian_id' => $request->bagian_id,
         ]);
 
         if (!$karyawan) {
@@ -88,19 +101,17 @@ class KaryawanController extends Controller
         return back();
     }
 
-    public function import(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'file' => 'required',
-        ], [
-            'file.required' => 'Data Karyawan harus ditambahkan!',
-        ]);
+    // public function import(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'file' => 'required',
+    //     ], [
+    //         'file.required' => 'Data Karyawan harus ditambahkan!',
+    //     ]);
 
-        if ($validator->fails()) {
-            alert()->error('Error', 'Gagal mengimport Karyawan!');
-            return back()->withInput()->withErrors($validator);
-        }
-
-        
-    }
+    //     if ($validator->fails()) {
+    //         alert()->error('Error', 'Gagal mengimport Karyawan!');
+    //         return back()->withInput()->withErrors($validator);
+    //     }
+    // }
 }

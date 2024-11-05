@@ -11,57 +11,71 @@ class UnitController extends Controller
 {
     public function index()
     {
-        $unit = Unit::select(
-            'nama',
-            'deskripsi',
-            'sistem',
-            'website',
-            'ap',
-            'email',
-            'telp'
-        )
-            ->first();
+        $units = Unit::select('id', 'nama')->get();
 
-        return view('admin.unit.index', compact('unit'));
+        return view('admin.unit.index', compact('units'));
     }
 
-    public function update(Request $request)
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'deskripsi' => 'required',
-            'sistem' => 'required',
-            'website' => 'required',
-            'ap' => 'required',
-            'email' => 'required',
-            'telp' => 'required',
         ], [
-            'nama.required'  => 'Nama Unit harus ditambahkan!',
-            'deskripsi.required' => 'Deskripsi harus diisi!',
-            'sistem.required' => 'Jumlah sistem harus diisi!',
-            'website.required' => 'Jumlah website harus diisi!',
-            'ap.required' => 'Jumlah akses point harus diisi!',
-            'email.required' => 'Email harus ditambahkan!',
-            'telp.required' => 'No. Telepon harus ditambahkan!',
+            'nama.required'  => 'Nama Unit harus diisi!',
         ]);
 
         if ($validator->fails()) {
-            $error = $validator->errors()->all();
-            alert()->error('Error', 'Gagal memperbarui Identitas Unit!');
-            return back()->withInput()->withError('error', $error);
+            alert()->error('Error', 'Gagal menambahkan Unit!');
+            return back()->withInput()->withErrors($validator);
         }
 
-        Unit::first()->update([
-            'nama' => $request->nama,
-            'deskripsi' => $request->deskripsi,
-            'sistem' => $request->sistem,
-            'website' => $request->website,
-            'ap' => $request->ap,
-            'email' => $request->email,
-            'telp' => $request->telp,
+        $unit = Unit::create([
+            'nama' => $request->nama
         ]);
 
-        alert()->success('Success', 'Berhasil memperbarui Identitas Unit');
+        if (!$unit) {
+            alert()->error('Error', 'Gagal menambahkan Unit!');
+            return back();
+        }
+
+        alert()->success('Success', 'Berhasil menambahkan Unit');
+
+        return back();
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+        ], [
+            'nama.required'  => 'Nama Unit harus diisi!',
+        ]);
+
+        if ($validator->fails()) {
+            alert()->error('Error', 'Gagal memperbarui Unit!');
+            return back()->withInput()->with('id', $id)->withErrors($validator);
+        }
+
+        $unit = Unit::where('id', $id)->update([
+            'nama' => $request->nama
+        ]);
+
+        if (!$unit) {
+            alert()->error('Error', 'Gagal memperbarui Unit!');
+            return back();
+        }
+
+        alert()->success('Success', 'Berhasil memperbarui Unit');
+
+        return back();
+    }
+
+    public function destroy($id)
+    {
+        $unit = Unit::where('id', $id)->first();
+        $unit->delete();
+
+        alert()->success('Success', 'Berhasil menghapus Unit');
 
         return back();
     }

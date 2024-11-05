@@ -7,6 +7,7 @@ use App\Models\PeminjamanCbt;
 use App\Models\Prodi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Str;
@@ -229,7 +230,7 @@ class PeminjamanCbtController extends Controller
                 'pj',
             )
             ->with('prodi:id,nama')
-            ->orderBy('tanggal_awal')
+            ->orderByDesc('tanggal_awal')
             ->orderBy('jam_awal')
             ->get();
 
@@ -385,9 +386,9 @@ class PeminjamanCbtController extends Controller
         $desktop = $agent->isDesktop();
 
         if ($desktop) {
-            return redirect()->away('https://web.whatsapp.com/send?phone=' . $telp);
+            return Redirect::away('https://web.whatsapp.com/send?phone=' . $telp);
         } else {
-            return redirect()->away('https://wa.me/' . $telp);
+            return Redirect::away('https://wa.me/' . $telp);
         }
     }
 }

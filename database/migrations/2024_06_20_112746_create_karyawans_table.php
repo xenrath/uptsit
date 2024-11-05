@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('telp')->unique()->nullable();
-            $table->unsignedBigInteger('unit_id');
-            $table->foreign('unit_id')->references('id')->on('units')->restrictOnDelete();
+            $table->unsignedBigInteger('bagian_id');
+            $table->foreign('bagian_id')->references('id')->on('bagians')->restrictOnDelete();
             $table->timestamps();
         });
     }

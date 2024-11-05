@@ -34,7 +34,7 @@ class User extends Authenticatable
             return false;
         }
     }
-    
+
     public function isUser()
     {
         if ($this->role == 'user') {
@@ -51,5 +51,19 @@ class User extends Authenticatable
         } else {
             return false;
         }
+    }
+
+    public function isSupport()
+    {
+        if ($this->bagian == 'support') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function isCbt()
+    {
+        return $this->is_cbt;
     }
 }

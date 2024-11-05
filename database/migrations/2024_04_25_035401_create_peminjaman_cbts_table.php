@@ -25,16 +25,12 @@ return new class extends Migration
             $table->string('pj');
             $table->string('telp')->nullable();
             $table->string('ttd')->nullable();
-            $table->enum('status', ['menunggu', 'disetujui', 'selesai']);
+            $table->text('pembatalan')->nullable();
+            $table->enum('status', ['menunggu', 'disetujui', 'selesai', 'batal']);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('peminjaman_cbts');

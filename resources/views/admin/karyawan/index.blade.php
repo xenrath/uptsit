@@ -32,8 +32,6 @@
                     <div class="card-header">
                         <h3 class="card-title">Data Karyawan</h3>
                         <div class="float-right">
-                            <button type="button" class="btn btn-secondary btn-sm btn-flat" data-toggle="modal"
-                                data-target="#modal-import">Import</button>
                             <button type="button" class="btn btn-primary btn-sm btn-flat" data-toggle="modal"
                                 data-target="#modal-tambah">Tambah</button>
                         </div>
@@ -49,13 +47,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($karyawans as $karyawan)
+                                @forelse ($karyawans as $key => $karyawan)
                                     <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                        <td class="text-center">{{ $karyawans->firstItem() + $key }}</td>
                                         <td>
-                                            <a href="{{ url('admin/hubungi/' . $karyawan->telp) }}" target="_blank">
+                                            @if ($karyawan->telp)
+                                                <a href="{{ url('admin/hubungi/' . $karyawan->telp) }}" target="_blank">
+                                                    {{ $karyawan->nama }}
+                                                </a>
+                                            @else
                                                 {{ $karyawan->nama }}
-                                            </a>
+                                            @endif
+                                            <hr class="my-2">
+                                            {{ $karyawan->bagian->sebagai ?? '' }} {{ $karyawan->bagian->unit->nama ?? '' }}
                                         </td>
                                         </td>
                                         <td class="text-center">
@@ -88,7 +92,8 @@
                                                             <label for="nama">Nama Karyawan</label>
                                                             <input type="text"
                                                                 class="form-control rounded-0 @if (session('id') == $karyawan->id) @error('nama') is-invalid @enderror @endif"
-                                                                id="nama" name="nama" value="{{ $karyawan->nama }}">
+                                                                id="nama" name="nama"
+                                                                value="{{ $karyawan->nama }}">
                                                             @if (session('id') == $karyawan->id)
                                                                 @error('nama')
                                                                     <div class="invalid-feedback">
@@ -107,6 +112,27 @@
                                                                 value="{{ $karyawan->telp }}">
                                                             @if (session('id') == $karyawan->id)
                                                                 @error('telp')
+                                                                    <div class="invalid-feedback">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
+                                                            @endif
+                                                        </div>
+                                                        <div class="form-group mb-2">
+                                                            <label for="bagian_id">Bagian</label>
+                                                            <select
+                                                                class="form-control custom-select rounded-0 @if (session('id') == $karyawan->id) @error('bagian_id') is-invalid @enderror @endif"
+                                                                name="bagian_id" id="bagian_id">
+                                                                <option value="">- Pilih -</option>
+                                                                @foreach ($bagians as $bagian)
+                                                                    <option value="{{ $bagian->id }}"
+                                                                        {{ $karyawan->bagian_id == $bagian->id ? 'selected' : '' }}>
+                                                                        {{ $bagian->sebagai }}
+                                                                        {{ $bagian->unit->nama ?? '' }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @if (session('id') == $karyawan->id)
+                                                                @error('bagian_id')
                                                                     <div class="invalid-feedback">
                                                                         {{ $message }}
                                                                     </div>
@@ -158,6 +184,13 @@
                                 @endforelse
                             </tbody>
                         </table>
+                        @if ($karyawans->total() > 10)
+                            <div class="mt-4">
+                                <div class="pagination float-right">
+                                    {{ $karyawans->appends(Request::all())->onEachSide(1)->links('pagination::bootstrap-4') }}
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -179,13 +212,16 @@
                     <div class="modal-body">
                         <div class="form-group mb-2">
                             <label for="nama">Nama Karyawan</label>
-                            <input type="text" class="form-control rounded-0 @error('nama') is-invalid @enderror"
+                            <input type="text"
+                                class="form-control rounded-0 @if (!session('id')) @error('nama') is-invalid @enderror @endif"
                                 id="nama" name="nama" value="{{ old('nama') }}">
-                            @error('nama')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                            @if (!session('id'))
+                                @error('nama')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            @endif
                         </div>
                         <div class="form-group mb-2">
                             <label for="telp">
@@ -193,54 +229,36 @@
                                 <small>(08xxxxxxxxxx)</small>
                             </label>
                             <input type="tel" id="telp" name="telp"
-                                class="form-control rounded-0 @error('telp') is-invalid @enderror"
+                                class="form-control rounded-0 @if (!session('id')) @error('telp') is-invalid @enderror @endif"
                                 value="{{ old('telp') }}">
-                            @error('telp')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                            @if (!session('id'))
+                                @error('telp')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            @endif
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default btn-sm btn-flat"
-                            data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary btn-sm btn-flat">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="modal-import">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Import Karyawan</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="{{ url('admin/karyawan/import') }}" method="POST" autocomplete="off">
-                    @csrf
-                    <div class="modal-body">
                         <div class="form-group mb-2">
-                            <label for="file">
-                                Data Karyawan
-                                <small class="text-muted">(excel)</small>
-                            </label>
-                            <input type="file" class="form-control rounded-0 @error('file') is-invalid @enderror"
-                                id="file" name="file" accept=".xlsx, .xls, .csv">
-                            @error('file')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                            <label for="bagian_id">Bagian</label>
+                            <select
+                                class="form-control custom-select rounded-0 @if (!session('id')) @error('bagian_id') is-invalid @enderror @endif"
+                                name="bagian_id" id="bagian_id">
+                                <option value="">- Pilih -</option>
+                                @foreach ($bagians as $bagian)
+                                    <option value="{{ $bagian->id }}"
+                                        {{ old('bagian_id') == $bagian->id ? 'selected' : '' }}>{{ $bagian->sebagai }}
+                                        {{ $bagian->unit->nama ?? '' }}</option>
+                                @endforeach
+                            </select>
+                            @if (!session('id'))
+                                @error('bagian_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            @endif
                         </div>
-                        <br>
-                        <a href="{{ asset('storage/uploads/') }}" class="btn btn-xs btn-info btn-flat">
-                            <i class="fas fa-download"></i>    
-                            Unduh Format Excel
-                        </a>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default btn-sm btn-flat"

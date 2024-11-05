@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 use Jenssegers\Agent\Agent;
 
 class HomeController extends Controller
@@ -23,9 +24,9 @@ class HomeController extends Controller
         $desktop = $agent->isDesktop();
 
         if ($desktop) {
-            return redirect()->away('https://web.whatsapp.com/send?phone=' . $telp);
+            return Redirect::away('https://web.whatsapp.com/send?phone=' . $telp);
         } else {
-            return redirect()->away('https://wa.me/' . $telp);
+            return Redirect::away('https://wa.me/' . $telp);
         }
     }
 }

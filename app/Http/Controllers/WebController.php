@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggota;
+use App\Models\Identitas;
 use App\Models\Jam;
 use App\Models\PeminjamanCbt;
 use App\Models\Pengaduan;
@@ -22,23 +23,22 @@ class WebController extends Controller
     {
         SEOMeta::setTitle('Home');
 
-        $unit = Unit::first();
-        $visimisi = Visimisi::first();
+        $identitas = Identitas::first();
 
-        return view('home', compact('unit', 'visimisi'));
+        return view('home', compact('identitas'));
     }
 
     public function about()
     {
         SEOMeta::setTitle('About');
 
-        $unit = Unit::first();
-        $visimisi = Visimisi::first();
+        $identitas = Identitas::first();
+
         $users = User::where('role', 'user')
             ->select('nama', 'telp', 'bagian', 'foto')
             ->get();
 
-        return view('about', compact('unit', 'visimisi', 'users'));
+        return view('about', compact('identitas', 'users'));
     }
 
     public function tupoksi()
@@ -54,9 +54,9 @@ class WebController extends Controller
     {
         SEOMeta::setTitle('Bandwith');
 
-        $unit = Unit::first();
+        $identitas = Identitas::first();
 
-        return view('bandwith', compact('unit'));
+        return view('bandwith', compact('identitas'));
     }
 
     public function sistem()

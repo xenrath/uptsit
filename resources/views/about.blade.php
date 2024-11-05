@@ -42,7 +42,7 @@
                             <span class="text-color mr-2 text-md ">01.</span>
                             Visi
                         </h3>
-                        <p>{{ $visimisi->visi }}</p>
+                        <p>{{ $identitas->visi }}</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -52,7 +52,7 @@
                             Misi
                         </h3>
                         <ol style="padding-left: 16px;">
-                            @foreach ($visimisi->misi as $misi)
+                            @foreach ($identitas->misi as $misi)
                                 <li style="padding-left: 8px;">
                                     <p class="mb-0">{{ $misi }}</p>
                                 </li>
@@ -72,7 +72,7 @@
                     <div class="counter-item text-center mb-5 mb-lg-0">
                         <i class="ti-desktop color-one text-md"></i>
                         <h3 class="mt-2 mb-0 text-white">
-                            <span class="counter-stat font-weight-bold">{{ $unit->sistem }}</span>
+                            <span class="counter-stat font-weight-bold">{{ $identitas->sistem }}</span>
                         </h3>
                         <p class="text-white-50">Jumlah Sistem</p>
                     </div>
@@ -81,7 +81,7 @@
                     <div class="counter-item text-center mb-5 mb-lg-0">
                         <i class="ti-world color-one text-md"></i>
                         <h3 class="mt-2 mb-0 text-white">
-                            <span class="counter-stat font-weight-bold">{{ $unit->website }}</span>
+                            <span class="counter-stat font-weight-bold">{{ $identitas->website }}</span>
                         </h3>
                         <p class="text-white-50">Jumlah Website</p>
                     </div>
@@ -90,7 +90,7 @@
                     <div class="counter-item text-center mb-5 mb-lg-0">
                         <i class="ti-rss-alt color-one text-md"></i>
                         <h3 class="mt-2 mb-0 text-white">
-                            <span class="counter-stat font-weight-bold">{{ $unit->ap }}</span>
+                            <span class="counter-stat font-weight-bold">{{ $identitas->ap }}</span>
                         </h3>
                         <p class="text-white-50">Jumlah Akses Point</p>
                     </div>
@@ -115,7 +115,7 @@
                 @foreach ($users as $user)
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="team-item-wrap mb-5">
-                            <div class="team-item position-relative" >
+                            <div class="team-item position-relative">
                                 @if ($user->foto)
                                     <img src="{{ asset('storage/uploads/' . $user->foto) }}" alt="{{ $user->nama }}"
                                         class="img-fluid w-100">

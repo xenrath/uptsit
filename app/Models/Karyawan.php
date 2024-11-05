@@ -12,6 +12,11 @@ class Karyawan extends Model
     protected $fillable = [
         'nama',
         'telp',
-        'unit_id'
+        'bagian_id'
     ];
+
+    public function bagian()
+    {
+        return $this->belongsTo(Bagian::class);
+    }
 }

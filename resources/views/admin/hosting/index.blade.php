@@ -124,7 +124,7 @@
                                         </div>
                                     @empty
                                         <tr>
-                                            <td class="text-center" colspan="5">- Data tidak ditemukan -</td>
+                                            <td class="text-center" colspan="6">- Data tidak ditemukan -</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

@@ -2,18 +2,6 @@
 <html lang="zxx">
 
 <head>
-    {{-- <!-- ** Basic Page Needs ** -->
-  <meta charset="utf-8">
-  <title>Website IT Bhamada</title>
-  <!-- ** Mobile Specific Metas ** -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Agency HTML Template">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <meta name="author" content="Themefisher">
-  <meta name="generator" content="Themefisher Html5 Agency Template v1.0">
-  <!-- theme meta -->
-  <meta name="theme-name" content="megakit" /> --}}
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -47,7 +35,7 @@
                                     class="logo-image">
                                 <div class="logo-title">
                                     <p>
-                                        <span class="d-none d-md-inline">UPT Sistem Informasi dan Teknologi</span>
+                                        <span class="d-none d-md-inline">UPT SIT</span>
                                         <span class="d-inline d-md-none" id="logo-title-sm">UPT SIT</span>
                                         <span class="d-none d-md-inline"><br>Universitas Bhamada</span>
                                     </p>
@@ -98,18 +86,21 @@
                                     <li class="nav-item {{ request()->is('kontak') ? 'active' : '' }}">
                                         <a class="nav-link" href="{{ url('kontak') }}">Kontak</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('peminjaman-cbt/create') }}"
+                                            class="btn btn-solid-border btn-round-full"
+                                            style="{{ request()->is('peminjaman-cbt/create') ? 'background-color: #FDED02; color: rgba(0, 0, 0, 0.65);' : '' }}">
+                                            Peminjaman CBT
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('login') }}" class="btn btn-solid-border btn-round-full"
+                                            style="{{ request()->is('login') ? 'background-color: #FDED02; color: rgba(0, 0, 0, 0.65);' : '' }}">
+                                            <span class="d-inline d-md-none">Login</span>
+                                            <i class="fas fa-sign-in-alt"></i>
+                                        </a>
+                                    </li>
                                 </ul>
-                                {{-- <div class="my-2 my-md-0 ml-lg-4 text-center">
-                                    <a href="{{ url('login') }}" class="btn btn-solid-border btn-round-full"
-                                        style="{{ request()->is('login') ? 'background-color: #FDED02; color: rgba(0, 0, 0, 0.65);' : '' }}">Buat
-                                        Pengaduan</a>
-                                </div> --}}
-                                <div class="my-2 my-md-0 ml-lg-4 text-center">
-                                    <a href="{{ url('peminjaman-cbt/create') }}"
-                                        class="btn btn-solid-border btn-round-full"
-                                        style="{{ request()->is('peminjaman-cbt/create') ? 'background-color: #FDED02; color: rgba(0, 0, 0, 0.65);' : '' }}">Peminjaman
-                                        CBT</a>
-                                </div>
                             </div>
                         </nav>
                     </div>
@@ -151,20 +142,20 @@
                 </div>
                 <div class="col-lg-6 col-sm-6">
                     @php
-                        $unit = \App\Models\Unit::select('nama', 'email', 'telp')->first();
+                        $identitas = \App\Models\Identitas::select('nama', 'email', 'telp')->first();
                         $telp = \App\Models\User::where('role', 'admin')->first()->value('telp');
                     @endphp
                     <div class="widget">
                         <div class="logo mb-4">
-                            <h3>{{ $unit->nama }}</h3>
+                            <h3>{{ $identitas->nama }}</h3>
                             <h4>Universitas Bhamada Slawi</h4>
                         </div>
                         <h6>
-                            <span>{{ $unit->email }}</span>
+                            <span>{{ $identitas->email }}</span>
                         </h6>
                         <a href="{{ url('hubungi/' . $telp) }}">
                             <span class="text-color h4">
-                                {{ $unit->telp }}
+                                {{ $identitas->telp }}
                             </span>
                         </a>
                     </div>

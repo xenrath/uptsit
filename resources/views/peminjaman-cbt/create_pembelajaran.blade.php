@@ -44,137 +44,131 @@
                         </ul>
                     </div>
                 @endif
-                <div class="row">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Form Peminjaman</h3>
-                            </div>
-                            <form action="{{ url('peminjaman-cbt/pembelajaran') }}" method="post">
-                                @csrf
-                                <div class="card-body">
-                                    <div class="form-group mb-2">
-                                        <label for="keperluan">Keperluan Peminjaman</label>
-                                        <input type="text" class="form-control rounded-0" id="keperluan" name="keperluan"
-                                            value="Pembelajaran Kuliah" readonly>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group mb-2">
-                                                <label for="nama">
-                                                    Nama Mahasiswa
-                                                    <small>(perwakilan)</small>
-                                                </label>
-                                                <input type="text" class="form-control rounded-0" id="nama"
-                                                    name="nama" value="{{ old('nama') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group mb-2">
-                                                <label for="prodi_id">Dari Prodi</label>
-                                                <select class="custom-select rounded-0" id="prodi_id" name="prodi_id">
-                                                    <option value="">- Pilih -</option>
-                                                    @foreach ($prodis as $prodi)
-                                                        <option value="{{ $prodi->id }}"
-                                                            {{ old('prodi_id') == $prodi->id ? 'selected' : '' }}>
-                                                            {{ $prodi->nama }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group mb-2">
-                                                <label for="tanggal_awal">Tanggal Pinjam</label>
-                                                <input type="date" class="form-control rounded-0" id="tanggal_awal"
-                                                    name="tanggal_awal" min="{{ date('Y-m-d') }}"
-                                                    value="{{ old('tanggal_awal') }}" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group mb-2">
-                                                <label for="jam_awal">Jam Mulai</label>
-                                                <input type="time" class="form-control rounded-0" id="jam_awal"
-                                                    name="jam_awal" value="{{ old('jam_awal') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group mb-2">
-                                                <label for="jam_akhir">Jam Akhir</label>
-                                                <input type="time" class="form-control rounded-0" id="jam_akhir"
-                                                    name="jam_akhir" value="{{ old('jam_akhir') }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group mb-2">
-                                                <label>
-                                                    Item Yang Dipinjam
-                                                    <small>(kosongkan jika hanya pinjam ruang)</small>
-                                                </label>
-                                                <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" id="item-komputer"
-                                                        name="items[komputer]" value="Perangkat Komputer"
-                                                        onclick="showKomputer()">
-                                                    <label for="item-komputer" class="custom-control-label"
-                                                        style="font-weight: normal">Perangkat
-                                                        Komputer</label>
-                                                </div>
-                                                <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" id="item-internet"
-                                                        name="items[internet]" value="Penggunaan Internet" disabled>
-                                                    <label for="item-internet" class="custom-control-label"
-                                                        style="font-weight: normal">Penggunaan
-                                                        Internet</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="layout_komputer" style="display: none;">
-                                                <div class="form-group mb-2">
-                                                    <label for="komputer">Jumlah Komputer</label>
-                                                    <input type="number" class="form-control rounded-0" id="komputer"
-                                                        name="jumlahs[komputer]"
-                                                        value="{{ old('jumlahs')['komputer'] ?? null }}" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-2">
-                                        <label for="keterangan">Uraian Kegiatan</label>
-                                        <textarea class="form-control rounded-0" id="keterangan" name="keterangan" rows="3"
-                                            placeholder="Tulis Kegiatan">{{ old('keterangan') }}</textarea>
-                                    </div>
-                                    <div class="form-group mb-2">
-                                        <label for="pj">Penanggung Jawab</label>
-                                        <input type="text" class="form-control rounded-0" id="pj"
-                                            name="pj" placeholder="Nama Dosen" value="{{ old('pj') }}">
-                                    </div>
-                                    <div class="form-group mb-2">
-                                        <label for="telp">
-                                            Nomor Peminjam
-                                            <small class="text-muted">(08xxxxxxxxxx)</small>
-                                        </label>
-                                        <input type="text" class="form-control rounded-0" id="telp"
-                                            name="telp" placeholder="Nomor yang dapat dihubungi"
-                                            value="{{ old('telp') }}">
-                                    </div>
-                                    <br>
-                                    <small class="text-muted">* Note : peminjaman ini hanya berlaku untuk satu dosen /
-                                        matakuliah</small>
-                                </div>
-                                <div class="card-footer text-right">
-                                    <button type="button" class="btn btn-info btn-flat" id="btn-cek"
-                                        data-toggle="modal" data-target="#modal-cek" hidden>Cek
-                                    </button>
-                                    <button type="submit" class="btn btn-primary btn-flat">Buat Peminjaman</button>
-                                </div>
-                            </form>
-                        </div>
+                <div class="card rounded-0">
+                    <div class="card-header">
+                        <h3 class="card-title">Form Peminjaman</h3>
                     </div>
+                    <form action="{{ url('peminjaman-cbt/pembelajaran') }}" method="post">
+                        @csrf
+                        <div class="card-body">
+                            <div class="form-group mb-2">
+                                <label for="keperluan">Keperluan Peminjaman</label>
+                                <input type="text" class="form-control rounded-0" id="keperluan" name="keperluan"
+                                    value="Pembelajaran Kuliah" readonly>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-2">
+                                        <label for="nama">
+                                            Nama Mahasiswa
+                                            <small>(perwakilan)</small>
+                                        </label>
+                                        <input type="text" class="form-control rounded-0" id="nama" name="nama"
+                                            value="{{ old('nama') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-2">
+                                        <label for="prodi_id">Dari Prodi</label>
+                                        <select class="custom-select rounded-0" id="prodi_id" name="prodi_id">
+                                            <option value="">- Pilih -</option>
+                                            @foreach ($prodis as $prodi)
+                                                <option value="{{ $prodi->id }}"
+                                                    {{ old('prodi_id') == $prodi->id ? 'selected' : '' }}>
+                                                    {{ $prodi->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-2">
+                                        <label for="tanggal_awal">Tanggal Pinjam</label>
+                                        <input type="date" class="form-control rounded-0" id="tanggal_awal"
+                                            name="tanggal_awal" min="{{ date('Y-m-d') }}"
+                                            value="{{ old('tanggal_awal') }}" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-2">
+                                        <label for="jam_awal">Jam Mulai</label>
+                                        <input type="time" class="form-control rounded-0" id="jam_awal" name="jam_awal"
+                                            value="{{ old('jam_awal') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-2">
+                                        <label for="jam_akhir">Jam Akhir</label>
+                                        <input type="time" class="form-control rounded-0" id="jam_akhir" name="jam_akhir"
+                                            value="{{ old('jam_akhir') }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-2">
+                                        <label>
+                                            Item Yang Dipinjam
+                                            <small>(kosongkan jika hanya pinjam ruang)</small>
+                                        </label>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="item-komputer"
+                                                name="items[komputer]" value="Perangkat Komputer" onclick="showKomputer()">
+                                            <label for="item-komputer" class="custom-control-label"
+                                                style="font-weight: normal">Perangkat
+                                                Komputer</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="item-internet"
+                                                name="items[internet]" value="Penggunaan Internet" disabled>
+                                            <label for="item-internet" class="custom-control-label"
+                                                style="font-weight: normal">Penggunaan
+                                                Internet</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="layout_komputer" style="display: none;">
+                                        <div class="form-group mb-2">
+                                            <label for="komputer">Jumlah Komputer</label>
+                                            <input type="number" class="form-control rounded-0" id="komputer"
+                                                name="jumlahs[komputer]" value="{{ old('jumlahs')['komputer'] ?? null }}"
+                                                disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="keterangan">Uraian Kegiatan</label>
+                                <textarea class="form-control rounded-0" id="keterangan" name="keterangan" rows="3"
+                                    placeholder="Tulis Kegiatan">{{ old('keterangan') }}</textarea>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="pj">Penanggung Jawab</label>
+                                <input type="text" class="form-control rounded-0" id="pj" name="pj"
+                                    placeholder="Nama Dosen" value="{{ old('pj') }}">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="telp">
+                                    Nomor Peminjam
+                                    <small class="text-muted">(08xxxxxxxxxx)</small>
+                                </label>
+                                <input type="text" class="form-control rounded-0" id="telp" name="telp"
+                                    placeholder="Nomor yang dapat dihubungi" value="{{ old('telp') }}">
+                            </div>
+                            <br>
+                            <small class="text-muted">* Note : peminjaman ini hanya berlaku untuk satu dosen /
+                                matakuliah</small>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button type="button" class="btn btn-info btn-flat" id="btn-cek" data-toggle="modal"
+                                data-target="#modal-cek" hidden>Cek
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-flat">Buat Peminjaman</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -182,7 +176,7 @@
     @if (session('cek'))
         <div class="modal fade show" id="modal-cek">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content rounded-0">
                     <div class="modal-header">
                         <h4 class="modal-title">Peminjaman CBT</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

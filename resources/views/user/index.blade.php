@@ -32,7 +32,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-4 col-6">
-                        <div class="small-box bg-info">
+                        <div class="small-box bg-info rounded-0">
                             <div class="inner">
                                 <h3>{{ $kegiatan }}</h3>
                                 <p>Kegiatan Hari ini</p>

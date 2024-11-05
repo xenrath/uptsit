@@ -38,7 +38,7 @@
                 @endif
                 <div class="row">
                     <div class="col">
-                        <div class="card">
+                        <div class="card rounded-0">
                             <div class="card-header">
                                 <h3 class="card-title">Form Peminjaman</h3>
                             </div>
